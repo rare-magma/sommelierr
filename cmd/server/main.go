@@ -23,7 +23,7 @@ func main() {
 
 	apiHandler := &application.APIHandler{GetRandomMovie: getRandomMovie, GetRandomSeries: getRandomSeries}
 	mux := http.NewServeMux()
-	application.RegisterRoutes(mux, apiHandler)
+	application.RegisterRoutes(mux, apiHandler, cfg.RadarrHost, cfg.SonarrHost)
 
 	addr := fmt.Sprintf(":%d", cfg.ServerPort)
 	fmt.Printf("sommelierr listening on %s\n", addr)

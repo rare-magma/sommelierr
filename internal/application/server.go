@@ -4,6 +4,9 @@ import (
 	_ "embed"
 	"encoding/json"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
+	"regexp"
 	"sommelierr/internal/domain"
 	"strings"
 )
@@ -74,8 +77,46 @@ func UIHandler() http.Handler {
 	})
 }
 
-func RegisterRoutes(mux *http.ServeMux, api *APIHandler) {
+func ImageHandler(radarrHost url.URL, sonarrHost url.URL) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		redirectHost := r.URL.Query().Get("redirectTo")
+		redirectPath := r.URL.Query().Get("path")
+		var target url.URL
+
+		switch redirectHost {
+		case "radarr":
+			target = radarrHost
+		case "sonarr":
+			target = sonarrHost
+		default:
+			http.Error(w, "Invalid redirectTo", http.StatusInternalServerError)
+			return
+		}
+		pattern := `^\/MediaCover\/[0-9]+\/poster\.jpg$`
+		matched, err := regexp.MatchString(pattern, redirectPath)
+		if err != nil {
+			http.Error(w, "Invalid path", http.StatusInternalServerError)
+			return
+		}
+		if !matched {
+			http.Error(w, "Invalid path", http.StatusInternalServerError)
+			return
+		}
+
+		proxy := httputil.NewSingleHostReverseProxy(&target)
+		director := proxy.Director
+		proxy.Director = func(r *http.Request) {
+			director(r)
+			r.Host = target.Host
+			r.URL.Path = redirectPath
+		}
+		proxy.ServeHTTP(w, r)
+	}
+}
+
+func RegisterRoutes(mux *http.ServeMux, api *APIHandler, radarrHost url.URL, sonarrHost url.URL) {
 	mux.HandleFunc("/movie", api.RandomMovieHandler)
 	mux.HandleFunc("/series", api.RandomSeriesHandler)
+	mux.HandleFunc("/image", ImageHandler(radarrHost, sonarrHost))
 	mux.Handle("/", UIHandler())
 }

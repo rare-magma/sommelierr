@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"sommelierr/internal/domain"
+	"strings"
 	"time"
 )
 
@@ -106,7 +107,8 @@ movies:
 		for _, img := range r.Images {
 			if img.CoverType == "poster" {
 				if img.URL != "" {
-					m.PosterURL = c.baseURL.String() + img.URL
+					path := url.QueryEscape(strings.SplitAfter(img.URL, ".jpg")[0])
+					m.PosterURL = "/image" + fmt.Sprintf("?redirectTo=radarr&path=%s", path)
 				} else if img.RemoteURL != "" {
 					m.PosterURL = img.RemoteURL
 				}
