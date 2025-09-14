@@ -10,6 +10,7 @@ import (
 type GetRandomSeries struct {
 	Repo domain.SeriesRepository
 }
+
 var ErrNoSeries = fmt.Errorf("no available series found")
 
 func (uc *GetRandomSeries) Execute() (*domain.Series, error) {

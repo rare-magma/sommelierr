@@ -51,14 +51,14 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 	}
 
 	var raw []struct {
-		ID            int              `json:"id"`
-		Title         string           `json:"title"`
-		OriginalTitle string           `json:"originalTitle"`
-		Year          int              `json:"year"`
-		Overview      string           `json:"overview"`
-		Images        []domain.Image   `json:"images"`
-		Added         string           `json:"added"`
-		HasFile       bool             `json:"hasFile"`
+		ID            int            `json:"id"`
+		Title         string         `json:"title"`
+		OriginalTitle string         `json:"originalTitle"`
+		Year          int            `json:"year"`
+		Overview      string         `json:"overview"`
+		Images        []domain.Image `json:"images"`
+		Added         string         `json:"added"`
+		HasFile       bool           `json:"hasFile"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&raw); err != nil {
 		return nil, err
@@ -82,15 +82,15 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 		}
 
 		for _, img := range r.Images {
-		if img.CoverType == "poster" {
-			if img.URL != "" {
-				m.PosterURL = c.baseURL.String() + img.URL
-			} else if img.RemoteURL != "" {
-				m.PosterURL = img.RemoteURL
+			if img.CoverType == "poster" {
+				if img.URL != "" {
+					m.PosterURL = c.baseURL.String() + img.URL
+				} else if img.RemoteURL != "" {
+					m.PosterURL = img.RemoteURL
+				}
+				break
 			}
-			break
 		}
-	}
 		result = append(result, m)
 	}
 	return result, nil

@@ -11,7 +11,7 @@ import (
 var indexHTML string
 
 type APIHandler struct {
-	GetRandomMovie *GetRandomMovie
+	GetRandomMovie  *GetRandomMovie
 	GetRandomSeries *GetRandomSeries
 }
 

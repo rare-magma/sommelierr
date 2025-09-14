@@ -8,11 +8,11 @@ import (
 )
 
 type Config struct {
-	RadarrHost string // e.g. http://localhost:7878
-	RadarrAPIKey     string
-	SonarrHost string // e.g. http://localhost:8989
-	SonarrAPIKey     string
-	ServerPort string
+	RadarrHost   string // e.g. http://localhost:7878
+	RadarrAPIKey string
+	SonarrHost   string // e.g. http://localhost:8989
+	SonarrAPIKey string
+	ServerPort   string
 }
 
 func Load() (*Config, error) {
@@ -44,18 +44,18 @@ func Load() (*Config, error) {
 	}
 
 	return &Config{
-		RadarrHost: radarrHost,
-		RadarrAPIKey:     radarrKey,
-		SonarrHost: sonarrHost,
-		SonarrAPIKey:     sonarrKey,
-		ServerPort: serverPort,
+		RadarrHost:   radarrHost,
+		RadarrAPIKey: radarrKey,
+		SonarrHost:   sonarrHost,
+		SonarrAPIKey: sonarrKey,
+		ServerPort:   serverPort,
 	}, nil
 }
 
 // loadDotEnv parses a file named ".env" in the current working directory.
 // It follows the same rules as the popular godotenv package:
-//   * ignore empty lines and lines that start with '#'
-//   * split on the first '=', trim surrounding whitespace and optional quotes
+//   - ignore empty lines and lines that start with '#'
+//   - split on the first '=', trim surrounding whitespace and optional quotes
 func loadDotEnv() error {
 	f, err := os.Open(".env")
 	if err != nil {

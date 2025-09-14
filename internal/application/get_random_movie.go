@@ -10,6 +10,7 @@ import (
 type GetRandomMovie struct {
 	Repo domain.MovieRepository
 }
+
 var ErrNoMovies = fmt.Errorf("no available movies found")
 
 func (uc *GetRandomMovie) Execute() (*domain.Movie, error) {

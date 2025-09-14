@@ -55,13 +55,13 @@ func (c *client) ListAvailable() ([]*domain.Series, error) {
 	}
 
 	var raw []struct {
-		ID            int              `json:"id"`
-		Title         string           `json:"title"`
-		Year          int              `json:"year"`
-		Overview      string           `json:"overview"`
-		Images        []domain.Image   `json:"images"`
-		Added         string           `json:"added"`
-		Statistics 	  statistics       `json:"statistics"`
+		ID         int            `json:"id"`
+		Title      string         `json:"title"`
+		Year       int            `json:"year"`
+		Overview   string         `json:"overview"`
+		Images     []domain.Image `json:"images"`
+		Added      string         `json:"added"`
+		Statistics statistics     `json:"statistics"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&raw); err != nil {
 		return nil, err
@@ -76,24 +76,24 @@ func (c *client) ListAvailable() ([]*domain.Series, error) {
 		added, _ := time.Parse(time.RFC3339, r.Added)
 
 		m := &domain.Series{
-			ID:            r.ID,
-			Title:         r.Title,
-			Year:          r.Year,
-			Overview:      r.Overview,
-			Images:        r.Images,
-			Added:         added,
+			ID:       r.ID,
+			Title:    r.Title,
+			Year:     r.Year,
+			Overview: r.Overview,
+			Images:   r.Images,
+			Added:    added,
 		}
 
 		for _, img := range r.Images {
-		if img.CoverType == "poster" {
-			if img.URL != "" {
-				m.PosterURL = c.baseURL.String() + img.URL
-			} else if img.RemoteURL != "" {
-				m.PosterURL = img.RemoteURL
+			if img.CoverType == "poster" {
+				if img.URL != "" {
+					m.PosterURL = c.baseURL.String() + img.URL
+				} else if img.RemoteURL != "" {
+					m.PosterURL = img.RemoteURL
+				}
+				break
 			}
-			break
 		}
-	}
 		result = append(result, m)
 	}
 	return result, nil
