@@ -55,8 +55,19 @@
         <p class="year" id="year"></p>
         <p class="overview" id="overview"></p>
     </div>
-    <button id="movieBtn">Pick another movie 🎲</button>
-    <button id="seriesBtn">Pick another series 🎲</button>
+    <form>
+        <fieldset>
+            <div>
+                <input type="radio" id="moviesAndSeries" name="filter" value="movies and series" checked>
+                <label for="moviesAndSeries">movies and series</label>
+                <input type="radio" id="movies" name="filter" value="movies">
+                <label for="movies">movies</label>
+                <input type="radio" id="series" name="filter" value="series">
+                <label for="series">series</label>
+            </div>
+        </fieldset>
+    </form>
+    <button id="anotherBtn">another one</button>
 
     <script>
         function load(data) {
@@ -92,9 +103,23 @@
             load(data);
         }
 
-        document.getElementById('movieBtn').addEventListener('click', loadRandomMovie);
-        document.getElementById('seriesBtn').addEventListener('click', loadRandomSeries);
-        window.addEventListener('DOMContentLoaded', loadRandomMovie);
+        async function loadRandom() {
+            const selection = document.querySelector('input[name="filter"]:checked').value;
+            switch (selection) {
+                case "movies":
+                    await loadRandomMovie();
+                    break;
+                case "series":
+                    await loadRandomSeries();
+                    break;
+                default:
+                    const randomOption = Math.floor(Math.random() * 2);;
+                    randomOption === 0 ? await loadRandomMovie() : await loadRandomSeries();
+            }
+        }
+
+        document.getElementById('anotherBtn').addEventListener('click', loadRandom);
+        window.addEventListener('DOMContentLoaded', loadRandom);
     </script>
 </body>
 
