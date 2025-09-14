@@ -19,10 +19,9 @@ type statistics struct {
 	PercentOfEpisodes float64 `json:"percentOfEpisodes"`
 }
 
-func New(baseURL, apiKey string) domain.SeriesRepository {
-	parsed, _ := url.Parse(baseURL)
+func New(baseURL *url.URL, apiKey string) domain.SeriesRepository {
 	return &client{
-		baseURL: parsed,
+		baseURL: baseURL,
 		apiKey:  apiKey,
 		httpCli: &http.Client{
 			Timeout: 15 * time.Second,
@@ -51,7 +50,7 @@ func (c *client) ListAvailable() ([]*domain.Series, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return nil, fmt.Errorf("sonarr returned %d", resp.StatusCode)
+		return nil, fmt.Errorf("Sonarr returned %d", resp.StatusCode)
 	}
 
 	var raw []struct {

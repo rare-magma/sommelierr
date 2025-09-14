@@ -1,52 +1,66 @@
-package config
+package application
 
 import (
 	"bufio"
 	"fmt"
+	"net/url"
 	"os"
+	"strconv"
 	"strings"
 )
 
 type Config struct {
-	RadarrHost   string // e.g. http://localhost:7878
+	RadarrHost   url.URL
 	RadarrAPIKey string
-	SonarrHost   string // e.g. http://localhost:8989
+	SonarrHost   url.URL
 	SonarrAPIKey string
-	ServerPort   string
+	ServerPort   int64
 }
 
-func Load() (*Config, error) {
+func LoadConfig() (*Config, error) {
 	if err := loadDotEnv(); err != nil && !os.IsNotExist(err) {
-		return nil, fmt.Errorf("reading .env: %w", err)
+		return nil, fmt.Errorf("Failed to load .env: %w", err)
 	}
 
-	radarrHost := os.Getenv("RADARR_HOST")
-	if radarrHost == "" {
+	radarrHostString := os.Getenv("RADARR_HOST")
+	if radarrHostString == "" {
 		return nil, fmt.Errorf("RADARR_HOST is required")
+	}
+	radarrHost, err := url.Parse(radarrHostString)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse Radarr host: %w", err)
 	}
 	radarrKey := os.Getenv("RADARR_API_KEY")
 	if radarrKey == "" {
 		return nil, fmt.Errorf("RADARR_API_KEY is required")
 	}
 
-	sonarrHost := os.Getenv("SONARR_HOST")
-	if sonarrHost == "" {
+	sonarrHostString := os.Getenv("SONARR_HOST")
+	if sonarrHostString == "" {
 		return nil, fmt.Errorf("SONARR_HOST is required")
+	}
+	sonarrHost, err := url.Parse(sonarrHostString)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse Sonarr host: %w", err)
 	}
 	sonarrKey := os.Getenv("SONARR_API_KEY")
 	if sonarrKey == "" {
 		return nil, fmt.Errorf("SONARR_API_KEY is required")
 	}
 
-	serverPort := os.Getenv("PORT")
-	if serverPort == "" {
-		serverPort = "8080"
+	serverPortString := os.Getenv("PORT")
+	if serverPortString == "" {
+		serverPortString = "8080"
+	}
+	serverPort, err := strconv.ParseInt(serverPortString, 0, 0)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse port: %w", err)
 	}
 
 	return &Config{
-		RadarrHost:   radarrHost,
+		RadarrHost:   *radarrHost,
 		RadarrAPIKey: radarrKey,
-		SonarrHost:   sonarrHost,
+		SonarrHost:   *sonarrHost,
 		SonarrAPIKey: sonarrKey,
 		ServerPort:   serverPort,
 	}, nil
@@ -59,7 +73,7 @@ func Load() (*Config, error) {
 func loadDotEnv() error {
 	f, err := os.Open(".env")
 	if err != nil {
-		return err // caller decides whether missing is an error
+		return err
 	}
 	defer f.Close()
 

@@ -15,10 +15,9 @@ type client struct {
 	httpCli *http.Client
 }
 
-func New(baseURL, apiKey string) domain.MovieRepository {
-	parsed, _ := url.Parse(baseURL)
+func New(baseURL *url.URL, apiKey string) domain.MovieRepository {
 	return &client{
-		baseURL: parsed,
+		baseURL: baseURL,
 		apiKey:  apiKey,
 		httpCli: &http.Client{
 			Timeout: 15 * time.Second,
@@ -47,7 +46,7 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return nil, fmt.Errorf("radarr returned %d", resp.StatusCode)
+		return nil, fmt.Errorf("Radarr returned %d", resp.StatusCode)
 	}
 
 	var raw []struct {
