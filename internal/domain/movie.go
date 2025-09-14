@@ -3,7 +3,6 @@ package domain
 import "time"
 
 type Movie struct {
-	ID            int       `json:"id"`
 	Title         string    `json:"title"`
 	OriginalTitle string    `json:"originalTitle,omitempty"`
 	Year          int       `json:"year"`
@@ -11,6 +10,7 @@ type Movie struct {
 	PosterURL     string    `json:"posterUrl,omitempty"`
 	Images        []Image   `json:"images,omitempty"`
 	Added         time.Time `json:"added,omitempty"`
+	SourceURL     string
 }
 
 type MovieRepository interface {

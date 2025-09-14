@@ -40,6 +40,13 @@
             line-height: 1.4;
         }
 
+        a:visited,
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+
         button {
             padding: 0.6rem 1.2rem;
             font-size: 1rem;
@@ -50,8 +57,12 @@
 
 <body>
     <div id="mediaContainer" class="card" style="display:none;">
-        <img id="poster" class="poster" src="" alt="Poster">
-        <h2 class="title" id="title"></h2>
+        <a href="">
+            <img id="poster" class="poster" src="" alt="Poster">
+        </a>
+        <a href="">
+            <h2 class="title" id="title"></h2>
+        </a>
         <p class="year" id="year"></p>
         <p class="overview" id="overview"></p>
     </div>
@@ -74,6 +85,10 @@
             document.getElementById('title').textContent = data.title;
             document.getElementById('year').textContent = '(' + data.year + ')';
             document.getElementById('overview').textContent = data.overview || 'No description.';
+            const links = document.getElementsByTagName('a');
+            for (const link of links) {
+                link.href = data.sourceUrl;
+            }
             if (data.posterUrl) {
                 document.getElementById('poster').src = data.posterUrl;
                 document.getElementById('poster').style.display = 'block';

@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"net/http"
+	"sommelierr/internal/domain"
 	"strings"
 )
 
@@ -25,16 +26,12 @@ func (h *APIHandler) RandomMovieHandler(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	resp := struct {
-		Title     string `json:"title"`
-		Year      int    `json:"year"`
-		Overview  string `json:"overview,omitempty"`
-		PosterURL string `json:"posterUrl,omitempty"`
-	}{
+	resp := domain.Media{
 		Title:     movie.Title,
 		Year:      movie.Year,
 		Overview:  movie.Overview,
 		PosterURL: movie.PosterURL,
+		SourceURL: movie.SourceURL,
 	}
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(resp)
@@ -50,16 +47,12 @@ func (h *APIHandler) RandomSeriesHandler(w http.ResponseWriter, r *http.Request)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	resp := struct {
-		Title     string `json:"title"`
-		Year      int    `json:"year"`
-		Overview  string `json:"overview,omitempty"`
-		PosterURL string `json:"posterUrl,omitempty"`
-	}{
+	resp := domain.Media{
 		Title:     series.Title,
 		Year:      series.Year,
 		Overview:  series.Overview,
 		PosterURL: series.PosterURL,
+		SourceURL: series.SourceURL,
 	}
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(resp)

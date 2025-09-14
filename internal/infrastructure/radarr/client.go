@@ -51,8 +51,8 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 	}
 
 	var raw []struct {
-		ID            int            `json:"id"`
 		Title         string         `json:"title"`
+		TitleSlug     string         `json:"titleSlug"`
 		OriginalTitle string         `json:"originalTitle"`
 		Year          int            `json:"year"`
 		Overview      string         `json:"overview"`
@@ -70,15 +70,16 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 			continue
 		}
 		added, _ := time.Parse(time.RFC3339, r.Added)
+		sourceUrl := fmt.Sprintf("%s/movie/%s",c.baseURL.String(),r.TitleSlug)
 
 		m := &domain.Movie{
-			ID:            r.ID,
 			Title:         r.Title,
 			OriginalTitle: r.OriginalTitle,
 			Year:          r.Year,
 			Overview:      r.Overview,
 			Images:        r.Images,
 			Added:         added,
+			SourceURL: sourceUrl,
 		}
 
 		for _, img := range r.Images {
