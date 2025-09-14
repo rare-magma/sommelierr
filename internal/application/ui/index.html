@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Random Radarr Movie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+
+        .card {
+            max-width: 600px;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+        }
+
+        .poster {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .year {
+            color: #555;
+        }
+
+        .overview {
+            margin-top: 1rem;
+            line-height: 1.4;
+        }
+
+        button {
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Random Radarr Movie</h1>
+    <div id="movieContainer" class="card" style="display:none;">
+        <img id="poster" class="poster" src="" alt="Poster">
+        <h2 class="title" id="title"></h2>
+        <p class="year" id="year"></p>
+        <p class="overview" id="overview"></p>
+    </div>
+    <button id="newBtn">Pick another 🎲</button>
+
+    <script>
+        async function loadRandomMovie() {
+            const resp = await fetch('/random-movie');
+            if (!resp.ok) {
+                alert('Failed to get a movie: ' + resp.statusText);
+                return;
+            }
+            const data = await resp.json();
+            document.getElementById('title').textContent = data.title;
+            document.getElementById('year').textContent = '(' + data.year + ')';
+            document.getElementById('overview').textContent = data.overview || 'No description.';
+            if (data.posterUrl) {
+                document.getElementById('poster').src = data.posterUrl;
+                document.getElementById('poster').style.display = 'block';
+            } else {
+                document.getElementById('poster').style.display = 'none';
+            }
+            document.getElementById('movieContainer').style.display = 'block';
+        }
+
+        document.getElementById('newBtn').addEventListener('click', loadRandomMovie);
+        window.addEventListener('DOMContentLoaded', loadRandomMovie);
+    </script>
+</body>
+
+</html>
