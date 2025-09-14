@@ -1,4 +1,4 @@
-package radarr
+package sonarr
 
 import (
 	"encoding/json"
@@ -15,7 +15,11 @@ type client struct {
 	httpCli *http.Client
 }
 
-func New(baseURL, apiKey string) domain.MovieRepository {
+type statistics struct {
+	PercentOfEpisodes float64 `json:"percentOfEpisodes"`
+}
+
+func New(baseURL, apiKey string) domain.SeriesRepository {
 	parsed, _ := url.Parse(baseURL)
 	return &client{
 		baseURL: parsed,
@@ -26,8 +30,8 @@ func New(baseURL, apiKey string) domain.MovieRepository {
 	}
 }
 
-func (c *client) ListAvailable() ([]*domain.Movie, error) {
-	rel := &url.URL{Path: "/api/v3/movie"}
+func (c *client) ListAvailable() ([]*domain.Series, error) {
+	rel := &url.URL{Path: "/api/v3/series"}
 	q := rel.Query()
 	q.Set("apikey", c.apiKey)
 	rel.RawQuery = q.Encode()
@@ -47,34 +51,33 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return nil, fmt.Errorf("radarr returned %d", resp.StatusCode)
+		return nil, fmt.Errorf("sonarr returned %d", resp.StatusCode)
 	}
 
 	var raw []struct {
 		ID            int              `json:"id"`
 		Title         string           `json:"title"`
-		OriginalTitle string           `json:"originalTitle"`
 		Year          int              `json:"year"`
 		Overview      string           `json:"overview"`
 		Images        []domain.Image   `json:"images"`
 		Added         string           `json:"added"`
-		HasFile       bool             `json:"hasFile"`
+		Statistics 	  statistics       `json:"statistics"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&raw); err != nil {
 		return nil, err
 	}
 
-	var result []*domain.Movie
+	var result []*domain.Series
 	for _, r := range raw {
-		if !r.HasFile {
+
+		if r.Statistics.PercentOfEpisodes == 0 {
 			continue
 		}
 		added, _ := time.Parse(time.RFC3339, r.Added)
 
-		m := &domain.Movie{
+		m := &domain.Series{
 			ID:            r.ID,
 			Title:         r.Title,
-			OriginalTitle: r.OriginalTitle,
 			Year:          r.Year,
 			Overview:      r.Overview,
 			Images:        r.Images,

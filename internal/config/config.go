@@ -7,39 +7,48 @@ import (
 	"strings"
 )
 
-// Config holds the values we need at runtime.
 type Config struct {
 	RadarrHost string // e.g. http://localhost:7878
-	APIKey     string // Radarr API key
-	Port       string // HTTP server port (default 8080)
+	RadarrAPIKey     string
+	SonarrHost string // e.g. http://localhost:8989
+	SonarrAPIKey     string
+	ServerPort string
 }
 
-// Load reads a .env file (if it exists) and then the process environment.
-// Values found in the real environment win over those from .env.
 func Load() (*Config, error) {
-	// 1️⃣ Load .env file (if present) – this is a tiny parser, no external lib.
 	if err := loadDotEnv(); err != nil && !os.IsNotExist(err) {
 		return nil, fmt.Errorf("reading .env: %w", err)
 	}
 
-	// 2️⃣ Pull values from the environment (real env overrides .env)
-	host := strings.TrimRight(os.Getenv("RADARR_HOST"), "/")
-	if host == "" {
-		host = "http://localhost:7878"
+	radarrHost := os.Getenv("RADARR_HOST")
+	if radarrHost == "" {
+		return nil, fmt.Errorf("RADARR_HOST is required")
 	}
-	key := os.Getenv("RADARR_API_KEY")
-	if key == "" {
+	radarrKey := os.Getenv("RADARR_API_KEY")
+	if radarrKey == "" {
 		return nil, fmt.Errorf("RADARR_API_KEY is required")
 	}
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+
+	sonarrHost := os.Getenv("SONARR_HOST")
+	if sonarrHost == "" {
+		return nil, fmt.Errorf("SONARR_HOST is required")
+	}
+	sonarrKey := os.Getenv("SONARR_API_KEY")
+	if sonarrKey == "" {
+		return nil, fmt.Errorf("SONARR_API_KEY is required")
+	}
+
+	serverPort := os.Getenv("PORT")
+	if serverPort == "" {
+		serverPort = "8080"
 	}
 
 	return &Config{
-		RadarrHost: host,
-		APIKey:     key,
-		Port:       port,
+		RadarrHost: radarrHost,
+		RadarrAPIKey:     radarrKey,
+		SonarrHost: sonarrHost,
+		SonarrAPIKey:     sonarrKey,
+		ServerPort: serverPort,
 	}, nil
 }
 

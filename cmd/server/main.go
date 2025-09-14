@@ -7,29 +7,27 @@ import (
 	"sommelierr/internal/application"
 	"sommelierr/internal/config"
 	"sommelierr/internal/infrastructure/radarr"
+	"sommelierr/internal/infrastructure/sonarr"
 )
 
 func main() {
-	// 1️⃣ Load configuration (reads .env + real env)
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatalf("config error: %v", err)
 	}
 
-	// 2️⃣ Build the Radarr repository implementation
-	repo := radarr.New(cfg.RadarrHost, cfg.APIKey)
+	moviesRepo := radarr.New(cfg.RadarrHost, cfg.RadarrAPIKey)
+	seriesRepo := sonarr.New(cfg.SonarrHost, cfg.SonarrAPIKey)
 
-	// 3️⃣ Build the application use‑case
-	getRandom := &application.GetRandomMovie{Repo: repo}
+	getRandomMovie := &application.GetRandomMovie{Repo: moviesRepo}
+	getRandomSeries := &application.GetRandomSeries{Repo: seriesRepo}
 
-	// 4️⃣ Wire HTTP handlers
-	apiHandler := &application.APIHandler{GetRandom: getRandom}
+	apiHandler := &application.APIHandler{GetRandomMovie: getRandomMovie, GetRandomSeries: getRandomSeries}
 	mux := http.NewServeMux()
 	application.RegisterRoutes(mux, apiHandler)
 
-	// 5️⃣ Run the HTTP server
-	addr := ":" + cfg.Port
-	fmt.Printf("🚀 server listening on %s (Radarr host: %s)\n", addr, cfg.RadarrHost)
+	addr := ":" + cfg.ServerPort
+	fmt.Printf("sommelierr listening on %s (Radarr host: %s, Sonarr host: %s)\n", addr, cfg.RadarrHost, cfg.SonarrHost)
 	if err := http.ListenAndServe(addr, mux); err != nil {
 		log.Fatalf("listen error: %v", err)
 	}

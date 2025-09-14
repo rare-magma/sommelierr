@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Random Radarr Movie</title>
+    <title>Sommelierr</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,23 +47,17 @@
 </head>
 
 <body>
-    <h1>Random Radarr Movie</h1>
-    <div id="movieContainer" class="card" style="display:none;">
+    <div id="mediaContainer" class="card" style="display:none;">
         <img id="poster" class="poster" src="" alt="Poster">
         <h2 class="title" id="title"></h2>
         <p class="year" id="year"></p>
         <p class="overview" id="overview"></p>
     </div>
-    <button id="newBtn">Pick another 🎲</button>
+    <button id="movieBtn">Pick another movie 🎲</button>
+    <button id="seriesBtn">Pick another series 🎲</button>
 
     <script>
-        async function loadRandomMovie() {
-            const resp = await fetch('/random-movie');
-            if (!resp.ok) {
-                alert('Failed to get a movie: ' + resp.statusText);
-                return;
-            }
-            const data = await resp.json();
+        function load(data) {
             document.getElementById('title').textContent = data.title;
             document.getElementById('year').textContent = '(' + data.year + ')';
             document.getElementById('overview').textContent = data.overview || 'No description.';
@@ -73,10 +67,31 @@
             } else {
                 document.getElementById('poster').style.display = 'none';
             }
-            document.getElementById('movieContainer').style.display = 'block';
+            document.getElementById('mediaContainer').style.display = 'block';
         }
 
-        document.getElementById('newBtn').addEventListener('click', loadRandomMovie);
+        async function loadRandomMovie() {
+            const resp = await fetch('/movie');
+            if (!resp.ok) {
+                alert('Failed to get movie: ' + resp.statusText);
+                return;
+            }
+            const data = await resp.json();
+            load(data);
+        }
+
+        async function loadRandomSeries() {
+            const resp = await fetch('/series');
+            if (!resp.ok) {
+                alert('Failed to get series: ' + resp.statusText);
+                return;
+            }
+            const data = await resp.json();
+            load(data);
+        }
+
+        document.getElementById('movieBtn').addEventListener('click', loadRandomMovie);
+        document.getElementById('seriesBtn').addEventListener('click', loadRandomSeries);
         window.addEventListener('DOMContentLoaded', loadRandomMovie);
     </script>
 </body>

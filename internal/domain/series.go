@@ -2,10 +2,9 @@ package domain
 
 import "time"
 
-type Movie struct {
+type Series struct {
 	ID            int       `json:"id"`
 	Title         string    `json:"title"`
-	OriginalTitle string    `json:"originalTitle,omitempty"`
 	Year          int       `json:"year"`
 	Overview      string    `json:"overview,omitempty"`
 	PosterURL     string    `json:"posterUrl,omitempty"`
@@ -13,7 +12,7 @@ type Movie struct {
 	Added         time.Time `json:"added,omitempty"`
 }
 
-type MovieRepository interface {
-	// ListAvailable returns movies that have a file on disk.
-	ListAvailable() ([]*Movie, error)
+type SeriesRepository interface {
+	// ListAvailable returns series that have at least 1 episode on disk.
+	ListAvailable() ([]*Series, error)
 }

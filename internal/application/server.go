@@ -10,14 +10,13 @@ import (
 //go:embed ui/index.html
 var indexHTML string
 
-// APIHandler bundles the use‑case(s) we expose.
 type APIHandler struct {
-	GetRandom *GetRandomMovie
+	GetRandomMovie *GetRandomMovie
+	GetRandomSeries *GetRandomSeries
 }
 
-// RandomMovieHandler returns JSON for the UI.
 func (h *APIHandler) RandomMovieHandler(w http.ResponseWriter, r *http.Request) {
-	movie, err := h.GetRandom.Execute()
+	movie, err := h.GetRandomMovie.Execute()
 	if err != nil {
 		if err == ErrNoMovies {
 			http.Error(w, "no movies available", http.StatusNotFound)
@@ -41,11 +40,39 @@ func (h *APIHandler) RandomMovieHandler(w http.ResponseWriter, r *http.Request) 
 	_ = json.NewEncoder(w).Encode(resp)
 }
 
-// UIHandler serves the embedded index.html content
+func (h *APIHandler) RandomSeriesHandler(w http.ResponseWriter, r *http.Request) {
+	series, err := h.GetRandomSeries.Execute()
+	if err != nil {
+		if err == ErrNoSeries {
+			http.Error(w, "no series available", http.StatusNotFound)
+			return
+		}
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	resp := struct {
+		Title     string `json:"title"`
+		Year      int    `json:"year"`
+		Overview  string `json:"overview,omitempty"`
+		PosterURL string `json:"posterUrl,omitempty"`
+	}{
+		Title:     series.Title,
+		Year:      series.Year,
+		Overview:  series.Overview,
+		PosterURL: series.PosterURL,
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(resp)
+}
+
 func UIHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Skip serving index.html for the API endpoint
-		if strings.HasPrefix(r.URL.Path, "/random-movie") {
+		// Skip serving index.html for the API endpoints
+		if strings.HasPrefix(r.URL.Path, "/movie") {
+			http.NotFound(w, r)
+			return
+		}
+		if strings.HasPrefix(r.URL.Path, "/series") {
 			http.NotFound(w, r)
 			return
 		}
@@ -54,10 +81,8 @@ func UIHandler() http.Handler {
 	})
 }
 
-// RegisterRoutes attaches the handlers to a ServeMux.
 func RegisterRoutes(mux *http.ServeMux, api *APIHandler) {
-	mux.HandleFunc("/random-movie", api.RandomMovieHandler)
-
-	// Serve embedded index.html for all other routes
+	mux.HandleFunc("/movie", api.RandomMovieHandler)
+	mux.HandleFunc("/series", api.RandomSeriesHandler)
 	mux.Handle("/", UIHandler())
 }

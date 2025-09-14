@@ -12,7 +12,6 @@ type GetRandomMovie struct {
 }
 var ErrNoMovies = fmt.Errorf("no available movies found")
 
-// Execute picks a random movie from the available list.
 func (uc *GetRandomMovie) Execute() (*domain.Movie, error) {
 	movies, err := uc.Repo.ListAvailable()
 	if err != nil {
