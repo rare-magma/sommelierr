@@ -69,7 +69,7 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 			continue
 		}
 		added, _ := time.Parse(time.RFC3339, r.Added)
-		sourceUrl := fmt.Sprintf("%s/movie/%s",c.baseURL.String(),r.TitleSlug)
+		sourceUrl := fmt.Sprintf("%s/movie/%s", c.baseURL.String(), r.TitleSlug)
 
 		m := &domain.Movie{
 			Title:         r.Title,
@@ -78,7 +78,7 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 			Overview:      r.Overview,
 			Images:        r.Images,
 			Added:         added,
-			SourceURL: sourceUrl,
+			SourceURL:     sourceUrl,
 		}
 
 		for _, img := range r.Images {

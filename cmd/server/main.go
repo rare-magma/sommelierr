@@ -25,7 +25,7 @@ func main() {
 	mux := http.NewServeMux()
 	application.RegisterRoutes(mux, apiHandler)
 
-	addr := fmt.Sprintf(":%d",cfg.ServerPort)
+	addr := fmt.Sprintf(":%d", cfg.ServerPort)
 	fmt.Printf("sommelierr listening on %s\n", addr)
 	if err := http.ListenAndServe(addr, mux); err != nil {
 		log.Fatalf("listen error: %v", err)

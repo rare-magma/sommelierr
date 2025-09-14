@@ -9,7 +9,7 @@ type Series struct {
 	PosterURL string    `json:"posterUrl,omitempty"`
 	Images    []Image   `json:"images,omitempty"`
 	Added     time.Time `json:"added,omitempty"`
-	SourceURL     string
+	SourceURL string
 }
 
 type SeriesRepository interface {

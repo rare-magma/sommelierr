@@ -73,14 +73,14 @@ func (c *client) ListAvailable() ([]*domain.Series, error) {
 			continue
 		}
 		added, _ := time.Parse(time.RFC3339, r.Added)
-		sourceUrl := fmt.Sprintf("%s/series/%s",c.baseURL.String(),r.TitleSlug)
+		sourceUrl := fmt.Sprintf("%s/series/%s", c.baseURL.String(), r.TitleSlug)
 
 		m := &domain.Series{
-			Title:    r.Title,
-			Year:     r.Year,
-			Overview: r.Overview,
-			Images:   r.Images,
-			Added:    added,
+			Title:     r.Title,
+			Year:      r.Year,
+			Overview:  r.Overview,
+			Images:    r.Images,
+			Added:     added,
 			SourceURL: sourceUrl,
 		}
 
