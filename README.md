@@ -64,6 +64,7 @@ Service that selects a random movie and/or series from Radarr / Sonarr.
 The env file has a few options:
 
 ```plaintext
+EXCLUDE_LABEL=watched
 RADARR_HOST=https://radarr.example.com
 RADARR_API_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 SONARR_HOST=https://sonarr.example.com
@@ -71,6 +72,7 @@ SONARR_API_KEY=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 PORT=8080
 ```
 
+- `EXCLUDE_LABEL` should be the label used to exclude already watched movies/series. This is optional.
 - `RADARR_HOST` should be the FQDN of the Radarr service.
 - `RADARR_API_KEY` should be the Radarr api key. This is configured in Settings - General - API Key
 - `SONARR_HOST` should be the FQDN of the Sonarr service.

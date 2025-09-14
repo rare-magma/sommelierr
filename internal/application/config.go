@@ -10,6 +10,7 @@ import (
 )
 
 type Config struct {
+	ExcludeLabel string
 	RadarrHost   url.URL
 	RadarrAPIKey string
 	SonarrHost   url.URL
@@ -57,7 +58,10 @@ func LoadConfig() (*Config, error) {
 		return nil, fmt.Errorf("Failed to parse port: %w", err)
 	}
 
+	excludeLabel := os.Getenv("EXCLUDE_LABEL")
+
 	return &Config{
+		ExcludeLabel: excludeLabel,
 		RadarrHost:   *radarrHost,
 		RadarrAPIKey: radarrKey,
 		SonarrHost:   *sonarrHost,

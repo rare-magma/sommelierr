@@ -15,8 +15,8 @@ func main() {
 		log.Fatalf("config error: %v", err)
 	}
 
-	moviesRepo := radarr.New(&cfg.RadarrHost, cfg.RadarrAPIKey)
-	seriesRepo := sonarr.New(&cfg.SonarrHost, cfg.SonarrAPIKey)
+	moviesRepo := radarr.New(&cfg.RadarrHost, cfg.RadarrAPIKey, cfg.ExcludeLabel)
+	seriesRepo := sonarr.New(&cfg.SonarrHost, cfg.SonarrAPIKey, cfg.ExcludeLabel)
 
 	getRandomMovie := &application.GetRandomMovie{Repo: moviesRepo}
 	getRandomSeries := &application.GetRandomSeries{Repo: seriesRepo}
