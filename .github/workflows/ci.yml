@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
-    - uses: actions/setup-go@v5
+    - uses: actions/setup-go@v6
 
     - name: Go Format
       run: gofmt -s -w . && git diff --exit-code
@@ -107,7 +107,7 @@ jobs:
         goarch: [amd64, arm64]
     steps:
     - uses: actions/checkout@v5
-    - uses: actions/setup-go@v5
+    - uses: actions/setup-go@v6
 
     - name: Build
       env:
