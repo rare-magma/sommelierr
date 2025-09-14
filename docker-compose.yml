@@ -3,6 +3,7 @@ services:
   sommelierr:
     image: ghcr.io/rare-magma/sommelierr:latest
     read_only: true
+    pull_policy: "always"
     cap_drop:
       - ALL
     security_opt:

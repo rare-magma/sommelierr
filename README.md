@@ -38,7 +38,7 @@ Service that selects a random movie and/or series from Radarr / Sonarr.
 1. Run it.
 
    ```bash
-    docker run --rm --read-only --env-file .env --publish 8080:8080 --cap-drop ALL --security-opt no-new-privileges:true --cpus 2 -m 64m --pids-limit 16 ghcr.io/rare-magma/sommelierr:latest
+    docker run --rm --read-only --pull always --env-file .env --publish 8080:8080 --cap-drop ALL --security-opt no-new-privileges:true --cpus 2 -m 64m --pids-limit 16 ghcr.io/rare-magma/sommelierr:latest
     ```
 
 1. Open Sommelierr's UI @ <http://localhost:8080>
