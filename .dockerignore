@@ -1,0 +1,5 @@
+.github/
+*.json
+*.png
+*.md
+.env
