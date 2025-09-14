@@ -72,7 +72,7 @@ SONARR_API_KEY=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 PORT=8080
 ```
 
-- `EXCLUDE_LABEL` should be the label used to exclude already watched movies/series. This is optional.
+- `EXCLUDE_LABEL` should be the label of the tag used to exclude already watched movies/series. This is optional.
 - `RADARR_HOST` should be the FQDN of the Radarr service.
 - `RADARR_API_KEY` should be the Radarr api key. This is configured in Settings - General - API Key
 - `SONARR_HOST` should be the FQDN of the Sonarr service.
