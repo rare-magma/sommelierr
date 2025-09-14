@@ -10,9 +10,9 @@ import (
 )
 
 type client struct {
-	baseURL *url.URL
-	apiKey  string
-	httpClient *http.Client
+	baseURL      *url.URL
+	apiKey       string
+	httpClient   *http.Client
 	excludeLabel string
 }
 
@@ -23,8 +23,8 @@ type Tag struct {
 
 func New(baseURL *url.URL, apiKey string, excludeLabel string) domain.MovieRepository {
 	return &client{
-		baseURL: baseURL,
-		apiKey:  apiKey,
+		baseURL:      baseURL,
+		apiKey:       apiKey,
 		excludeLabel: excludeLabel,
 		httpClient: &http.Client{
 			Timeout: 15 * time.Second,
