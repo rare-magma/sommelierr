@@ -1,6 +1,6 @@
 # sommelierr
 
-Service that selects a random movie and/or series from Radarr / Sonarr.
+A refined selection from your Radarr and Sonarr cellars.
 
 ## Dependencies
 
