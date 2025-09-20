@@ -1,4 +1,10 @@
 * {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
 	--black: #000000;
 	--brown: #422800;
 	--green: #3ea745;
@@ -10,13 +16,7 @@
 	--4xWidth: 1rem;
 	--5xWidth: 2rem;
 
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-:root {
-	--size: 60px;
+	--backgroundSquaresSize: 3.75rem;
 }
 
 body {
@@ -27,7 +27,7 @@ body {
 	align-items: center;
 	background:
 		repeating-conic-gradient(var(--brown) 0% 25%, var(--white) 0% 50%) 0 0 /
-		var(--size) var(--size);
+		var(--backgroundSquaresSize) var(--backgroundSquaresSize);
 	padding-top: 1rem;
 }
 
@@ -147,6 +147,7 @@ input:active {
 	color: var(--brown);
 	border: var(--width) solid var(--brown);
 }
+
 #anotherBtn:active:hover {
 	box-shadow: var(--brown) var(--width) var(--width) 0 0;
 	transform: translate(var(--width), var(--width));
