@@ -5,80 +5,38 @@
     <meta charset="UTF-8">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎥</text></svg>">
-    <title>Sommelierr</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2rem;
-        }
-
-        .card {
-            max-width: 600px;
-            border: 1px solid #ddd;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
-        }
-
-        .poster {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 1rem;
-        }
-
-        .title {
-            font-size: 1.8rem;
-            margin: 0;
-        }
-
-        .year {
-            color: #555;
-        }
-
-        .overview {
-            margin-top: 1rem;
-            line-height: 1.4;
-        }
-
-        a:visited,
-        a {
-            color: black;
-            text-decoration: none;
-        }
-
-
-        button {
-            padding: 0.6rem 1.2rem;
-            font-size: 1rem;
-            cursor: pointer;
-        }
+        {{.Style | safeCss }}
     </style>
+    <title>Sommelierr</title>
 </head>
 
 <body>
-    <div id="mediaContainer" class="card" style="display:none;">
-        <a href="">
-            <img id="poster" class="poster" src="" alt="Poster">
-        </a>
-        <a href="">
-            <h2 class="title" id="title"></h2>
-        </a>
-        <p class="year" id="year"></p>
-        <p class="overview" id="overview"></p>
+    <div id="cardContainer" class="card-container">
+        <div id="mediaContainer" class="card">
+            <a href="">
+                <img id="poster" class="poster" src="" alt="Poster">
+            </a>
+            <a href="">
+                <h2 class="title" id="title"></h2>
+            </a>
+            <p class="year" id="year"></p>
+            <p class="overview" id="overview"></p>
+            <form>
+                <fieldset>
+                    <div>
+                        <input type="radio" id="moviesAndSeries" name="filter" value="movies and series" checked>
+                        <label for="moviesAndSeries">movies and series</label>
+                        <input type="radio" id="movies" name="filter" value="movies">
+                        <label for="movies">movies</label>
+                        <input type="radio" id="series" name="filter" value="series">
+                        <label for="series">series</label>
+                    </div>
+                </fieldset>
+            </form>
+            <button id="anotherBtn">another one</button>
+        </div>
     </div>
-    <form>
-        <fieldset>
-            <div>
-                <input type="radio" id="moviesAndSeries" name="filter" value="movies and series" checked>
-                <label for="moviesAndSeries">movies and series</label>
-                <input type="radio" id="movies" name="filter" value="movies">
-                <label for="movies">movies</label>
-                <input type="radio" id="series" name="filter" value="series">
-                <label for="series">series</label>
-            </div>
-        </fieldset>
-    </form>
-    <button id="anotherBtn">another one</button>
 
     <script>
         function load(data) {

@@ -1,8 +1,10 @@
 package application
 
 import (
+	"bytes"
 	_ "embed"
 	"encoding/json"
+	"html/template"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -12,7 +14,14 @@ import (
 )
 
 //go:embed ui/index.html
-var indexHTML string
+var html string
+
+//go:embed ui/styles.css
+var css string
+
+type Model struct {
+	Style string
+}
 
 type APIHandler struct {
 	GetRandomMovie  *GetRandomMovie
@@ -62,6 +71,26 @@ func (h *APIHandler) RandomSeriesHandler(w http.ResponseWriter, r *http.Request)
 }
 
 func UIHandler() http.Handler {
+	model := Model{
+		Style: css,
+	}
+
+	funcs := template.FuncMap{
+		"safeCss": func(s string) template.CSS {
+			return template.CSS(s)
+		},
+	}
+	template, err := template.New("index").Funcs(funcs).Parse(html)
+	if err != nil {
+		panic(err)
+	}
+
+	var output bytes.Buffer
+	err = template.Execute(&output, model)
+	if err != nil {
+		panic(err)
+	}
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Skip serving index.html for the API endpoints
 		if strings.HasPrefix(r.URL.Path, "/movie") {
@@ -73,7 +102,7 @@ func UIHandler() http.Handler {
 			return
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		_, _ = w.Write([]byte(indexHTML))
+		_, _ = w.Write([]byte(output.Bytes()))
 	})
 }
 
