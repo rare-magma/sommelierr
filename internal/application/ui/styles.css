@@ -1,5 +1,6 @@
 * {
 	--brown: #422800;
+	--green: #3ea745;
 
 	margin: 0;
 	padding: 0;
@@ -40,7 +41,7 @@ body {
 	align-items: center;
 	text-align: left;
 	gap: 10px;
-	background-color: #3ea745;
+	background-color: var(--green);
 	max-width: 25%;
 	max-height: 30%;
 	border-radius: 30px;
@@ -103,17 +104,17 @@ input {
 }
 
 input:hover {
-	background-color: #3ea745;
+	background-color: var(--green);
 }
 
 input:active {
 	box-shadow: var(--brown) 2px 2px 0 0;
 	transform: translate(2px, 2px);
-	color: #3ea745;
+	color: var(--green);
 }
 
 #anotherBtn {
-	background-color: #3ea745;
+	background-color: var(--green);
 	border: 2px solid var(--brown);
 	border-radius: 30px;
 	box-shadow: var(--brown) 4px 4px 0 0;
