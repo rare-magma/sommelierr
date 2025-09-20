@@ -4,6 +4,12 @@
 	--green: #3ea745;
 	--white: #e0e5e2;
 
+	--width: 2px;
+	--2xWidth: 4px;
+	--3xWidth: 8px;
+	--4xWidth: 16px;
+	--5xWidth: 32px;
+
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -14,7 +20,7 @@
 }
 
 body {
-	font-family: Arial, sans-serif;
+	font-family: system-ui, sans-serif;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -27,9 +33,9 @@ body {
 
 .card {
 	padding: 1rem;
-	border: 8px solid var(--brown);
-	box-shadow: 15px 15px var(--brown);
-	border-radius: 30px;
+	border: var(--3xWidth) solid var(--brown);
+	box-shadow: var(--4xWidth) var(--4xWidth) var(--brown);
+	border-radius: var(--5xWidth);
 	display: flex !important;
 	flex-direction: column;
 	justify-content: center;
@@ -42,18 +48,18 @@ body {
 	justify-content: center;
 	align-items: center;
 	text-align: left;
-	gap: 10px;
+	gap: var(--3xWidth);
 	background-color: var(--green);
 	max-width: 25%;
 	max-height: 30%;
-	border-radius: 30px;
+	border-radius: var(--5xWidth);
 }
 
 .poster {
 	max-width: 100%;
 	height: auto;
 	margin-bottom: 1rem;
-	border-radius: 30px;
+	border-radius: var(--5xWidth);
 }
 
 .title {
@@ -88,16 +94,16 @@ fieldset {
 
 input {
 	background-color: var(--white);
-	border: 2px solid var(--brown);
-	border-radius: 30px;
-	box-shadow: var(--brown) 2px 2px 0 0;
+	border: var(--width) solid var(--brown);
+	border-radius: var(--5xWidth);
+	box-shadow: var(--brown) var(--width) var(--width) 0 0;
 	color: var(--brown);
 	cursor: pointer;
 	display: inline-block;
 	font-weight: 600;
-	font-size: 12px;
-	padding: 0 18px;
-	line-height: 50px;
+	font-size: 0.75rem;
+	padding: 0 var(--4xWidth);
+	line-height: 3.125rem;
 	text-align: center;
 	text-decoration: none;
 	user-select: none;
@@ -110,25 +116,25 @@ input:hover {
 }
 
 input:active {
-	box-shadow: var(--brown) 2px 2px 0 0;
-	transform: translate(2px, 2px);
+	box-shadow: var(--brown) var(--width) var(--width) 0 0;
+	transform: translate(var(--width), var(--width));
 	color: var(--green);
 }
 
 #anotherBtn {
 	background-color: var(--green);
-	border: 2px solid var(--brown);
-	border-radius: 30px;
-	box-shadow: var(--brown) 4px 4px 0 0;
+	border: var(--width) solid var(--brown);
+	border-radius: var(--5xWidth);
+	box-shadow: var(--brown) var(--2xWidth) var(--2xWidth) 0 0;
 	color: var(--white);
 	cursor: pointer;
 	font-weight: 600;
-	font-size: 14px;
-	padding: 0 18px;
-	line-height: 50px;
+	font-size: 0.875rem;
+	padding: 0 var(--4xWidth);
+	line-height: 3.125rem;
 	text-align: center;
 	text-decoration: none;
-	margin-top: 10px;
+	margin-top: var(--3xWidth);
 }
 
 #anotherBtn:hover {
@@ -136,14 +142,14 @@ input:active {
 }
 
 #anotherBtn:active {
-	box-shadow: var(--brown) 2px 2px 0 0;
-	transform: translate(2px, 2px);
+	box-shadow: var(--brown) var(--width) var(--width) 0 0;
+	transform: translate(var(--width), var(--width));
 	color: var(--brown);
-	border: 2px solid var(--brown);
+	border: var(--width) solid var(--brown);
 }
 #anotherBtn:active:hover {
-	box-shadow: var(--brown) 2px 2px 0 0;
-	transform: translate(2px, 2px);
+	box-shadow: var(--brown) var(--width) var(--width) 0 0;
+	transform: translate(var(--width), var(--width));
 	color: var(--white);
-	border: 2px solid var(--brown);
+	border: var(--width) solid var(--brown);
 }
