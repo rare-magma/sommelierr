@@ -1,4 +1,6 @@
 * {
+	--brown: #422800;
+
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -15,15 +17,15 @@ body {
 	justify-content: center;
 	align-items: center;
 	background:
-		repeating-conic-gradient(#422800 0% 25%, #fff 0% 50%) 0 0 / var(--size)
+		repeating-conic-gradient(var(--brown) 0% 25%, #fff 0% 50%) 0 0 / var(--size)
 		var(--size);
 	padding-top: 1rem;
 }
 
 .card {
 	padding: 1rem;
-	border: 8px solid #422800;
-	box-shadow: 15px 15px #422800;
+	border: 8px solid var(--brown);
+	box-shadow: 15px 15px var(--brown);
 	border-radius: 30px;
 	display: flex !important;
 	flex-direction: column;
@@ -57,7 +59,7 @@ body {
 }
 
 .year {
-	color: #422800;
+	color: var(--brown);
 }
 
 .overview {
@@ -83,10 +85,10 @@ fieldset {
 
 input {
 	background-color: #e0e5e2;
-	border: 2px solid #422800;
+	border: 2px solid var(--brown);
 	border-radius: 30px;
-	box-shadow: #422800 2px 2px 0 0;
-	color: #422800;
+	box-shadow: var(--brown) 2px 2px 0 0;
+	color: var(--brown);
 	cursor: pointer;
 	display: inline-block;
 	font-weight: 600;
@@ -105,16 +107,16 @@ input:hover {
 }
 
 input:active {
-	box-shadow: #422800 2px 2px 0 0;
+	box-shadow: var(--brown) 2px 2px 0 0;
 	transform: translate(2px, 2px);
 	color: #3ea745;
 }
 
 #anotherBtn {
 	background-color: #3ea745;
-	border: 2px solid #422800;
+	border: 2px solid var(--brown);
 	border-radius: 30px;
-	box-shadow: #422800 4px 4px 0 0;
+	box-shadow: var(--brown) 4px 4px 0 0;
 	color: white;
 	cursor: pointer;
 	font-weight: 600;
@@ -127,18 +129,18 @@ input:active {
 }
 
 #anotherBtn:hover {
-	background-color: #422800;
+	background-color: var(--brown);
 }
 
 #anotherBtn:active {
-	box-shadow: #422800 2px 2px 0 0;
+	box-shadow: var(--brown) 2px 2px 0 0;
 	transform: translate(2px, 2px);
-	color: #422800;
-	border: 2px solid #422800;
+	color: var(--brown);
+	border: 2px solid var(--brown);
 }
 #anotherBtn:active:hover {
-	box-shadow: #422800 2px 2px 0 0;
+	box-shadow: var(--brown) 2px 2px 0 0;
 	transform: translate(2px, 2px);
 	color: white;
-	border: 2px solid #422800;
+	border: 2px solid var(--brown);
 }
