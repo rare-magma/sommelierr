@@ -1,6 +1,8 @@
 * {
+	--black: #000000;
 	--brown: #422800;
 	--green: #3ea745;
+	--white: #e0e5e2;
 
 	margin: 0;
 	padding: 0;
@@ -18,8 +20,8 @@ body {
 	justify-content: center;
 	align-items: center;
 	background:
-		repeating-conic-gradient(var(--brown) 0% 25%, #fff 0% 50%) 0 0 / var(--size)
-		var(--size);
+		repeating-conic-gradient(var(--brown) 0% 25%, var(--var(--white)) 0% 50%) 0
+		0 / var(--size) var(--size);
 	padding-top: 1rem;
 }
 
@@ -76,7 +78,7 @@ body {
 
 a:visited,
 a {
-	color: black;
+	color: var(--black);
 	text-decoration: none;
 }
 
@@ -85,7 +87,7 @@ fieldset {
 }
 
 input {
-	background-color: #e0e5e2;
+	background-color: var(--white);
 	border: 2px solid var(--brown);
 	border-radius: 30px;
 	box-shadow: var(--brown) 2px 2px 0 0;
@@ -118,7 +120,7 @@ input:active {
 	border: 2px solid var(--brown);
 	border-radius: 30px;
 	box-shadow: var(--brown) 4px 4px 0 0;
-	color: white;
+	color: var(--white);
 	cursor: pointer;
 	font-weight: 600;
 	font-size: 14px;
@@ -142,6 +144,6 @@ input:active {
 #anotherBtn:active:hover {
 	box-shadow: var(--brown) 2px 2px 0 0;
 	transform: translate(2px, 2px);
-	color: white;
+	color: var(--white);
 	border: 2px solid var(--brown);
 }
