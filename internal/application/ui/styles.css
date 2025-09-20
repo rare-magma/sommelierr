@@ -20,8 +20,8 @@ body {
 	justify-content: center;
 	align-items: center;
 	background:
-		repeating-conic-gradient(var(--brown) 0% 25%, var(--var(--white)) 0% 50%) 0
-		0 / var(--size) var(--size);
+		repeating-conic-gradient(var(--brown) 0% 25%, var(--white) 0% 50%) 0 0 /
+		var(--size) var(--size);
 	padding-top: 1rem;
 }
 
