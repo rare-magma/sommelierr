@@ -4,11 +4,11 @@
 	--green: #3ea745;
 	--white: #e0e5e2;
 
-	--width: 2px;
-	--2xWidth: 4px;
-	--3xWidth: 8px;
-	--4xWidth: 16px;
-	--5xWidth: 32px;
+	--width: 0.125rem;
+	--2xWidth: 0.25rem;
+	--3xWidth: 0.5rem;
+	--4xWidth: 1rem;
+	--5xWidth: 2rem;
 
 	margin: 0;
 	padding: 0;
@@ -63,7 +63,7 @@ body {
 }
 
 .title {
-	font-size: 1.8rem;
+	font-size: 2rem;
 	margin: 0;
 }
 
