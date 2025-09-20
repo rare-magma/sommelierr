@@ -1,145 +1,144 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 :root {
-    --size: 60px;
-
+	--size: 60px;
 }
-
-
 
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: repeating-conic-gradient(#422800 0% 25%, #fff 0% 50%) 0 0 / var(--size) var(--size);
-    padding-top: 1rem;
+	font-family: Arial, sans-serif;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background:
+		repeating-conic-gradient(#422800 0% 25%, #fff 0% 50%) 0 0 / var(--size)
+		var(--size);
+	padding-top: 1rem;
 }
 
-
 .card {
-
-    padding: 1rem;
-    border: 8px solid #422800;
-    box-shadow: 15px 15px #422800;
-    border-radius: 30px;
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+	padding: 1rem;
+	border: 8px solid #422800;
+	box-shadow: 15px 15px #422800;
+	border-radius: 30px;
+	display: flex !important;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .card-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: left;
-    gap: 10px;
-    background-color: #3ea745;
-    max-width: 25%;
-    max-height: 30%;
-    border-radius: 30px;
-
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: left;
+	gap: 10px;
+	background-color: #3ea745;
+	max-width: 25%;
+	max-height: 30%;
+	border-radius: 30px;
 }
 
 .poster {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 1rem;
-    border-radius: 30px;
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 1rem;
+	border-radius: 30px;
 }
 
 .title {
-    font-size: 1.8rem;
-    margin: 0;
+	font-size: 1.8rem;
+	margin: 0;
 }
 
 .year {
-    color: #422800;
+	color: #422800;
 }
 
-
 .overview {
-    margin-top: 1rem;
-    line-height: 1.4;
-    padding-bottom: 1rem;
-    text-overflow: ellipsis;
-    max-height: 10ch;
-    overflow: hidden;
-    white-space: normal;
-    margin-bottom: 0.5rem;
+	margin-top: 1rem;
+	line-height: 1.4;
+	padding-bottom: 1rem;
+	text-overflow: ellipsis;
+	max-height: 10ch;
+	overflow: hidden;
+	white-space: normal;
+	margin-bottom: 0.5rem;
 }
 
 a:visited,
 a {
-    color: black;
-    text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
 
 fieldset {
-    border: 0;
+	border: 0;
 }
 
 input {
-    background-color: #e0e5e2;
-    border: 2px solid #422800;
-    border-radius: 30px;
-    box-shadow: #422800 2px 2px 0 0;
-    color: #422800;
-    cursor: pointer;
-    display: inline-block;
-    font-weight: 600;
-    font-size: 12px;
-    padding: 0 18px;
-    line-height: 50px;
-    text-align: center;
-    text-decoration: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    cursor: pointer;
+	background-color: #e0e5e2;
+	border: 2px solid #422800;
+	border-radius: 30px;
+	box-shadow: #422800 2px 2px 0 0;
+	color: #422800;
+	cursor: pointer;
+	display: inline-block;
+	font-weight: 600;
+	font-size: 12px;
+	padding: 0 18px;
+	line-height: 50px;
+	text-align: center;
+	text-decoration: none;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
 }
 
 input:hover {
-    background-color: #3ea745;
+	background-color: #3ea745;
 }
 
 input:active {
-    box-shadow: #422800 2px 2px 0 0;
-    transform: translate(2px, 2px);
-    color: #3ea745;
+	box-shadow: #422800 2px 2px 0 0;
+	transform: translate(2px, 2px);
+	color: #3ea745;
 }
 
 #anotherBtn {
-    background-color: #3ea745;
-    border: 2px solid #422800;
-    border-radius: 30px;
-    box-shadow: #422800 4px 4px 0 0;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 0 18px;
-    line-height: 50px;
-    text-align: center;
-    text-decoration: none;
-    margin-top: 10px;
+	background-color: #3ea745;
+	border: 2px solid #422800;
+	border-radius: 30px;
+	box-shadow: #422800 4px 4px 0 0;
+	color: white;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 14px;
+	padding: 0 18px;
+	line-height: 50px;
+	text-align: center;
+	text-decoration: none;
+	margin-top: 10px;
 }
 
 #anotherBtn:hover {
-    background-color: #422800;
+	background-color: #422800;
 }
 
 #anotherBtn:active {
-    box-shadow: white 2px 2px 0 0;
-    transform: translate(2px, 2px);
-    color: #422800;
-    border: 2px solid white;
+	box-shadow: #422800 2px 2px 0 0;
+	transform: translate(2px, 2px);
+	color: #422800;
+	border: 2px solid #422800;
+}
+#anotherBtn:active:hover {
+	box-shadow: #422800 2px 2px 0 0;
+	transform: translate(2px, 2px);
+	color: white;
+	border: 2px solid #422800;
 }
