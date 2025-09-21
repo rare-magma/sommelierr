@@ -2,6 +2,10 @@
 
 A refined selection from your Radarr and Sonarr cellars.
 
+|                                                Horizontal layout                                                 |                                              Vertical layout                                               |
+| :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
+| <img alt="sommelierr horizontal layout screenshot" src="docs/desktop.png" title="Horizontal" width="100%"> | <img alt="sommelierr vertical layout screenshot" src="docs/phone.png" title="Vertical" width="100%"> |
+
 ## Dependencies
 
 - [go](https://go.dev/)
