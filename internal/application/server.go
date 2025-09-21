@@ -28,7 +28,6 @@ type APIHandler struct {
 	GetRandomSeries *GetRandomSeries
 }
 
-
 func processTemplate() []byte {
 	model := Model{
 		Style: css,
