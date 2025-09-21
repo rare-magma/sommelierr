@@ -9,16 +9,63 @@
 	--green: #3ea745;
 	--white: #e0e5e2;
 
-	--width: 0.125rem;
-	--2xWidth: 0.25rem;
-	--3xWidth: 0.5rem;
-	--4xWidth: 1rem;
-	--5xWidth: 2rem;
-
 	--backgroundSquaresSize: 3.75rem;
+
+	/* Custom, iPhone Retina */
+	@media only screen and (min-width: 320px) {
+		--width: 0.25rem;
+		--2xWidth: 0.5rem;
+		--3xWidth: 1rem;
+		--4xWidth: 2rem;
+		--5xWidth: 4rem;
+		--overviewWidth: 80%;
+		--smallFontSize: 1.5rem;
+		--fontSize: 2rem;
+		--largeFontSize: 4rem;
+	}
+
+	/* Extra Small Devices, Phones */
+	@media only screen and (min-width: 480px) {
+		--width: 0.25rem;
+		--2xWidth: 0.5rem;
+		--3xWidth: 1rem;
+		--4xWidth: 2rem;
+		--5xWidth: 4rem;
+		--overviewWidth: 80%;
+		--smallFontSize: 1.5rem;
+		--fontSize: 2rem;
+		--largeFontSize: 4rem;
+	}
+
+	/* Small Devices, Tablets */
+	@media only screen and (min-width: 768px) {
+		--width: 0.25rem;
+		--2xWidth: 0.5rem;
+		--3xWidth: 1rem;
+		--4xWidth: 2rem;
+		--5xWidth: 4rem;
+		--overviewWidth: 80%;
+		--smallFontSize: 1.5rem;
+		--fontSize: 2rem;
+		--largeFontSize: 4rem;
+	}
+
+	/* Medium Devices, Desktops */
+	@media only screen and (min-width: 992px) {
+		--width: 0.125rem;
+		--2xWidth: 0.25rem;
+		--3xWidth: 0.5rem;
+		--4xWidth: 1rem;
+		--5xWidth: 2rem;
+		--overviewWidth: 100%;
+		--smallFontSize: 0.75rem;
+		--fontSize: 1rem;
+		--largeFontSize: 2rem;
+	}
 }
 
 body {
+	font-size: var(--fontSize);
 	font-family: system-ui, sans-serif;
 	display: flex;
 	flex-direction: column;
@@ -28,6 +75,10 @@ body {
 		repeating-conic-gradient(var(--black) 0% 25%, var(--white) 0% 50%) 0 0 /
 		var(--backgroundSquaresSize) var(--backgroundSquaresSize);
 	height: 100svh;
+
+	@media screen and (orientation: portrait) {
+		background: var(--black);
+	}
 }
 
 .card {
@@ -55,6 +106,7 @@ body {
 	@media screen and (orientation: portrait) {
 		max-width: 100svw;
 		max-height: 100svh;
+		height: auto;
 	}
 }
 
@@ -73,7 +125,7 @@ body {
 
 .title {
 	padding-top: 1rem;
-	font-size: 2rem;
+	font-size: var(--largeFontSize);
 	margin: 0;
 	flex-grow: 0;
 }
@@ -84,6 +136,7 @@ body {
 }
 
 .overview {
+	max-width: var(--overviewWidth);
 	margin-top: 1rem;
 	line-height: 1.4;
 	padding-bottom: 1rem;
@@ -123,7 +176,7 @@ input {
 	cursor: pointer;
 	display: inline-block;
 	font-weight: 600;
-	font-size: 0.75rem;
+	font-size: var(--smallFontSize);
 	padding: 0 var(--4xWidth);
 	line-height: 3.125rem;
 	text-align: center;
@@ -151,7 +204,7 @@ input:active {
 	color: var(--black);
 	cursor: pointer;
 	font-weight: 600;
-	font-size: 0.875rem;
+	font-size: var(--smallFontSize);
 	padding: 0 var(--4xWidth);
 	line-height: 3.125rem;
 	text-align: center;
