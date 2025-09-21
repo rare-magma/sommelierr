@@ -12,8 +12,3 @@ type Movie struct {
 	Added         time.Time `json:"added,omitempty"`
 	SourceURL     string
 }
-
-type MovieRepository interface {
-	// ListAvailable returns movies that have a file on disk.
-	ListAvailable() ([]*Movie, error)
-}
