@@ -14,14 +14,14 @@
 <body>
     <div id="cardContainer" class="card-container">
         <div id="mediaContainer" class="card">
-            <a href="">
+            <a class="half-height" href="">
                 <img id="poster" class="poster" src="" alt="Poster">
             </a>
             <a href="">
                 <h2 class="title" id="title"></h2>
             </a>
             <p class="year" id="year"></p>
-            <p class="overview" id="overview"></p>
+            <p class="overview two-line overview-max-height" id="overview"></p>
             <form>
                 <fieldset>
                     <div>
@@ -91,7 +91,13 @@
             }
         }
 
+        function expandOverview() {
+            document.getElementById('overview').classList.toggle('two-line');
+            document.getElementById('overview').classList.toggle('overview-max-height');
+        }
+
         document.getElementById('anotherBtn').addEventListener('click', loadRandom);
+        document.getElementById('overview').addEventListener('click', expandOverview);
         window.addEventListener('DOMContentLoaded', loadRandom);
     </script>
 </body>
