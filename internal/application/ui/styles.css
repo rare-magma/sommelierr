@@ -27,7 +27,7 @@ body {
 	background:
 		repeating-conic-gradient(var(--black) 0% 25%, var(--white) 0% 50%) 0 0 /
 		var(--backgroundSquaresSize) var(--backgroundSquaresSize);
-	height: 100vh;
+	height: 100svh;
 }
 
 .card {
@@ -53,8 +53,8 @@ body {
 	border-radius: var(--5xWidth);
 
 	@media screen and (orientation: portrait) {
-		max-width: 100vw;
-		max-height: 100vh;
+		max-width: 100svw;
+		max-height: 100svh;
 	}
 }
 
