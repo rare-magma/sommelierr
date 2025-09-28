@@ -6,6 +6,10 @@ A refined selection from your Radarr and Sonarr cellars.
 | :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
 | <img alt="sommelierr horizontal layout screenshot" src="docs/desktop.png" title="Horizontal" width="100%"> | <img alt="sommelierr vertical layout screenshot" src="docs/phone.png" title="Vertical" width="100%"> |
 
+## Published On
+
+- [selfh.st](https://selfh.st/weekly/2025-09-26/)
+
 ## Dependencies
 
 - [go](https://go.dev/)
