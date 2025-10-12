@@ -1,8 +1,10 @@
 package sonarr
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"sommelierr/internal/domain"
@@ -39,10 +41,6 @@ func New(baseURL *url.URL, apiKey string, excludeLabel string) domain.SeriesRepo
 
 func (c *client) ListAvailable() ([]*domain.Series, error) {
 	rel := &url.URL{Path: "/api/v3/series"}
-	q := rel.Query()
-	q.Set("apikey", c.apiKey)
-	rel.RawQuery = q.Encode()
-
 	u := c.baseURL.ResolveReference(rel)
 
 	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
@@ -50,6 +48,7 @@ func (c *client) ListAvailable() ([]*domain.Series, error) {
 		return nil, err
 	}
 	req.Header.Set("Accept", "application/json")
+	req.Header.Set("X-Api-Key", c.apiKey)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -62,6 +61,7 @@ func (c *client) ListAvailable() ([]*domain.Series, error) {
 	}
 
 	var raw []struct {
+		Id         int            `json:"id"`
 		Tags       []int          `json:"tags"`
 		Title      string         `json:"title"`
 		TitleSlug  string         `json:"titleSlug"`
@@ -97,7 +97,8 @@ series:
 		added, _ := time.Parse(time.RFC3339, r.Added)
 		sourceUrl := fmt.Sprintf("%s/series/%s", c.baseURL.String(), r.TitleSlug)
 
-		m := &domain.Series{
+		s := &domain.Series{
+			Id:        r.Id,
 			Title:     r.Title,
 			Year:      r.Year,
 			Overview:  r.Overview,
@@ -109,17 +110,46 @@ series:
 		for _, img := range r.Images {
 			if img.CoverType == "poster" {
 				if img.URL != "" {
-					path := url.QueryEscape(strings.SplitAfter(img.URL, ".jpg")[0])
-					m.PosterURL = "/image" + fmt.Sprintf("?redirectTo=sonarr&path=%s", path)
+					s.PosterURL = img.URL
 				} else if img.RemoteURL != "" {
-					m.PosterURL = img.RemoteURL
+					s.RemotePosterURL = img.RemoteURL
 				}
 				break
 			}
 		}
-		result = append(result, m)
+		result = append(result, s)
 	}
 	return result, nil
+}
+
+func (c *client) GetPoster(id int, imageUrl string) (string, error) {
+	imageFilename := strings.Split(imageUrl, "/")
+	imageName := strings.Split(imageFilename[len(imageFilename)-1], "?")[0]
+	rel := &url.URL{Path: fmt.Sprintf("/api/v3/mediacover/%d/%s", id, imageName)}
+	u := c.baseURL.ResolveReference(rel)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Accept", "*/*")
+	req.Header.Set("X-Api-Key", c.apiKey)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return "", fmt.Errorf("Sonarr returned %d", resp.StatusCode)
+	}
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	imageType := resp.Header.Get("Content-Type")
+	return fmt.Sprintf("data:%s;base64, %s", imageType, base64.StdEncoding.EncodeToString(data)), nil
 }
 
 func (c *client) findTagByLabel(label string) (int, error) {
@@ -147,7 +177,7 @@ func (c *client) findTagByLabel(label string) (int, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return 0, fmt.Errorf("Radarr returned %d", resp.StatusCode)
+		return 0, fmt.Errorf("Sonarr returned %d", resp.StatusCode)
 	}
 
 	var raw []Tag

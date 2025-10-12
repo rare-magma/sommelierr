@@ -1,8 +1,10 @@
 package radarr
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"sommelierr/internal/domain"
@@ -35,10 +37,6 @@ func New(baseURL *url.URL, apiKey string, excludeLabel string) domain.MovieRepos
 
 func (c *client) ListAvailable() ([]*domain.Movie, error) {
 	rel := &url.URL{Path: "/api/v3/movie"}
-	q := rel.Query()
-	q.Set("apikey", c.apiKey)
-	rel.RawQuery = q.Encode()
-
 	u := c.baseURL.ResolveReference(rel)
 
 	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
@@ -46,6 +44,7 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 		return nil, err
 	}
 	req.Header.Set("Accept", "application/json")
+	req.Header.Set("X-Api-Key", c.apiKey)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -58,6 +57,7 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 	}
 
 	var raw []struct {
+		Id            int            `json:"id"`
 		Tags          []int          `json:"tags"`
 		Title         string         `json:"title"`
 		TitleSlug     string         `json:"titleSlug"`
@@ -95,6 +95,7 @@ movies:
 		sourceUrl := fmt.Sprintf("%s/movie/%s", c.baseURL.String(), r.TitleSlug)
 
 		m := &domain.Movie{
+			Id:            r.Id,
 			Title:         r.Title,
 			OriginalTitle: r.OriginalTitle,
 			Year:          r.Year,
@@ -107,10 +108,9 @@ movies:
 		for _, img := range r.Images {
 			if img.CoverType == "poster" {
 				if img.URL != "" {
-					path := url.QueryEscape(strings.SplitAfter(img.URL, ".jpg")[0])
-					m.PosterURL = "/image" + fmt.Sprintf("?redirectTo=radarr&path=%s", path)
+					m.PosterURL = img.URL
 				} else if img.RemoteURL != "" {
-					m.PosterURL = img.RemoteURL
+					m.RemotePosterURL = img.RemoteURL
 				}
 				break
 			}
@@ -118,6 +118,36 @@ movies:
 		result = append(result, m)
 	}
 	return result, nil
+}
+
+func (c *client) GetPoster(id int, imageUrl string) (string, error) {
+	imageFilename := strings.Split(imageUrl, "/")
+	imageName := strings.Split(imageFilename[len(imageFilename)-1], "?")[0]
+	rel := &url.URL{Path: fmt.Sprintf("/api/v3/mediacover/%d/%s", id, imageName)}
+	u := c.baseURL.ResolveReference(rel)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Accept", "*/*")
+	req.Header.Set("X-Api-Key", c.apiKey)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return "", fmt.Errorf("Radarr returned %d", resp.StatusCode)
+	}
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	imageType := resp.Header.Get("Content-Type")
+	return fmt.Sprintf("data:%s;base64, %s", imageType, base64.StdEncoding.EncodeToString(data)), nil
 }
 
 func (c *client) findTagByLabel(label string) (int, error) {

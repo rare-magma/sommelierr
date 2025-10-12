@@ -21,5 +21,13 @@ func (uc *GetRandomMovie) Execute() (*domain.Movie, error) {
 	if len(movies) == 0 {
 		return nil, ErrNoMovies
 	}
-	return movies[rand.Intn(len(movies))], nil
+	randomPick := movies[rand.Intn(len(movies))]
+	if randomPick.PosterURL != "" {
+		p, err := uc.Repo.GetPoster(randomPick.Id, randomPick.PosterURL)
+		if err != nil {
+			return nil, err
+		}
+		randomPick.Poster = p
+	}
+	return randomPick, nil
 }

@@ -21,5 +21,13 @@ func (uc *GetRandomSeries) Execute() (*domain.Series, error) {
 	if len(series) == 0 {
 		return nil, ErrNoSeries
 	}
-	return series[rand.Intn(len(series))], nil
+	randomPick := series[rand.Intn(len(series))]
+	if randomPick.PosterURL != "" {
+		p, err := uc.Repo.GetPoster(randomPick.Id, randomPick.PosterURL)
+		if err != nil {
+			return nil, err
+		}
+		randomPick.Poster = p
+	}
+	return randomPick, nil
 }

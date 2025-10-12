@@ -47,8 +47,11 @@
             for (const link of links) {
                 link.href = data.sourceUrl;
             }
-            if (data.posterUrl) {
-                document.getElementById('poster').src = data.posterUrl;
+            if (data.posterB64) {
+                document.getElementById('poster').src = data.posterB64;
+                document.getElementById('poster').style.display = 'block';
+            } else if (data.posterURL) {
+                document.getElementById('poster').src = data.posterURL;
                 document.getElementById('poster').style.display = 'block';
             } else {
                 document.getElementById('poster').style.display = 'none';
