@@ -134,7 +134,7 @@ func UIHandler() http.Handler {
 		}
 
 		defer writer.Close()
-		writer.Write([]byte(html))
+		writer.Write(html)
 	})
 }
 
