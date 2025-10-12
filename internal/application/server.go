@@ -2,6 +2,7 @@ package application
 
 import (
 	"bytes"
+	"compress/gzip"
 	_ "embed"
 	"encoding/json"
 	"html/template"
@@ -68,7 +69,16 @@ func (h *APIHandler) RandomMovieHandler(w http.ResponseWriter, r *http.Request) 
 		SourceURL: movie.SourceURL,
 	}
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(resp)
+	w.Header().Set("Content-Encoding", "gzip")
+	body, err := json.Marshal(resp)
+	writer, err := gzip.NewWriterLevel(w, gzip.BestCompression)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	defer writer.Close()
+	writer.Write(body)
 }
 
 func (h *APIHandler) RandomSeriesHandler(w http.ResponseWriter, r *http.Request) {
@@ -90,7 +100,16 @@ func (h *APIHandler) RandomSeriesHandler(w http.ResponseWriter, r *http.Request)
 		SourceURL: series.SourceURL,
 	}
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(resp)
+	w.Header().Set("Content-Encoding", "gzip")
+	body, err := json.Marshal(resp)
+	writer, err := gzip.NewWriterLevel(w, gzip.BestCompression)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	defer writer.Close()
+	writer.Write(body)
 }
 
 func UIHandler() http.Handler {
@@ -107,7 +126,15 @@ func UIHandler() http.Handler {
 			return
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		_, _ = w.Write([]byte(html))
+		w.Header().Set("Content-Encoding", "gzip")
+		writer, err := gzip.NewWriterLevel(w, gzip.BestCompression)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		defer writer.Close()
+		writer.Write([]byte(html))
 	})
 }
 
