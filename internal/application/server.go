@@ -71,6 +71,10 @@ func (h *APIHandler) RandomMovieHandler(w http.ResponseWriter, r *http.Request) 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Encoding", "gzip")
 	body, err := json.Marshal(resp)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	writer, err := gzip.NewWriterLevel(w, gzip.BestCompression)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -102,6 +106,10 @@ func (h *APIHandler) RandomSeriesHandler(w http.ResponseWriter, r *http.Request)
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Encoding", "gzip")
 	body, err := json.Marshal(resp)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	writer, err := gzip.NewWriterLevel(w, gzip.BestCompression)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
