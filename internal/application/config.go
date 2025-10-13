@@ -20,7 +20,7 @@ type Config struct {
 
 func LoadConfig() (*Config, error) {
 	if err := loadDotEnv(); err != nil && !os.IsNotExist(err) {
-		return nil, fmt.Errorf("Failed to load .env: %w", err)
+		return nil, fmt.Errorf("failed to load .env: %w", err)
 	}
 
 	radarrHostString := os.Getenv("RADARR_HOST")
@@ -29,7 +29,7 @@ func LoadConfig() (*Config, error) {
 	}
 	radarrHost, err := url.Parse(radarrHostString)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to parse Radarr host: %w", err)
+		return nil, fmt.Errorf("failed to parse Radarr host: %w", err)
 	}
 	radarrKey := os.Getenv("RADARR_API_KEY")
 	if radarrKey == "" {
@@ -42,7 +42,7 @@ func LoadConfig() (*Config, error) {
 	}
 	sonarrHost, err := url.Parse(sonarrHostString)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to parse Sonarr host: %w", err)
+		return nil, fmt.Errorf("failed to parse Sonarr host: %w", err)
 	}
 	sonarrKey := os.Getenv("SONARR_API_KEY")
 	if sonarrKey == "" {
@@ -55,7 +55,7 @@ func LoadConfig() (*Config, error) {
 	}
 	serverPort, err := strconv.ParseInt(serverPortString, 0, 0)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to parse port: %w", err)
+		return nil, fmt.Errorf("failed to parse port: %w", err)
 	}
 
 	excludeLabel := os.Getenv("EXCLUDE_LABEL")

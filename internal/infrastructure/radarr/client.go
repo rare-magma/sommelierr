@@ -53,7 +53,7 @@ func (c *client) ListAvailable() ([]*domain.Movie, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return nil, fmt.Errorf("Radarr returned %d", resp.StatusCode)
+		return nil, fmt.Errorf("radarr returned %d", resp.StatusCode)
 	}
 
 	var raw []struct {
@@ -140,7 +140,7 @@ func (c *client) GetPoster(id int, imageUrl string) (string, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return "", fmt.Errorf("Radarr returned %d", resp.StatusCode)
+		return "", fmt.Errorf("radarr returned %d", resp.StatusCode)
 	}
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -152,7 +152,7 @@ func (c *client) GetPoster(id int, imageUrl string) (string, error) {
 
 func (c *client) findTagByLabel(label string) (int, error) {
 	if label == "" {
-		return 0, fmt.Errorf("No tag label supplied")
+		return 0, fmt.Errorf("no tag label supplied")
 	}
 
 	rel := &url.URL{Path: "/api/v3/tag"}
@@ -175,7 +175,7 @@ func (c *client) findTagByLabel(label string) (int, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return 0, fmt.Errorf("Radarr returned %d", resp.StatusCode)
+		return 0, fmt.Errorf("radarr returned %d", resp.StatusCode)
 	}
 
 	var raw []Tag
@@ -188,5 +188,5 @@ func (c *client) findTagByLabel(label string) (int, error) {
 			return tag.Id, nil
 		}
 	}
-	return 0, fmt.Errorf("Tag %s not found", label)
+	return 0, fmt.Errorf("tag %s not found", label)
 }
