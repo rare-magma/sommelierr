@@ -19,9 +19,6 @@
 		--4xWidth: 2rem;
 		--5xWidth: 4rem;
 		--overviewWidth: 80%;
-		--smallFontSize: 1.5rem;
-		--fontSize: 2rem;
-		--largeFontSize: 4rem;
 	}
 
 	/* Extra Small Devices, Phones */
@@ -32,9 +29,6 @@
 		--4xWidth: 2rem;
 		--5xWidth: 4rem;
 		--overviewWidth: 80%;
-		--smallFontSize: 1.5rem;
-		--fontSize: 2rem;
-		--largeFontSize: 4rem;
 	}
 
 	/* Small Devices, Tablets */
@@ -45,9 +39,6 @@
 		--4xWidth: 2rem;
 		--5xWidth: 4rem;
 		--overviewWidth: 80%;
-		--smallFontSize: 1.5rem;
-		--fontSize: 2rem;
-		--largeFontSize: 4rem;
 	}
 
 	/* Medium Devices, Desktops */
