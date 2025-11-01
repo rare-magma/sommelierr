@@ -1,4 +1,4 @@
-FROM docker.io/library/golang:alpine AS builder
+FROM --platform=$BUILDPLATFORM docker.io/library/golang:alpine AS builder
 WORKDIR /app
 ENV CGO_ENABLED=0
 
