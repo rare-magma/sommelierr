@@ -10,48 +10,23 @@
 	--white: #e0e5e2;
 
 	--backgroundSquaresSize: 3.75rem;
+	--width: 0.125rem;
+	--2xWidth: 0.25rem;
+	--3xWidth: 0.5rem;
+	--4xWidth: 1rem;
+	--5xWidth: 2rem;
+	--smallFontSize: 0.75rem;
+	--fontSize: 1rem;
+	--largeFontSize: 2rem;
 
 	/* Custom, iPhone Retina */
 	@media only screen and (min-width: 320px) {
-		--width: 0.25rem;
-		--2xWidth: 0.5rem;
-		--3xWidth: 1rem;
-		--4xWidth: 2rem;
-		--5xWidth: 4rem;
-		--overviewWidth: 80%;
-	}
-
-	/* Extra Small Devices, Phones */
-	@media only screen and (min-width: 480px) {
-		--width: 0.25rem;
-		--2xWidth: 0.5rem;
-		--3xWidth: 1rem;
-		--4xWidth: 2rem;
-		--5xWidth: 4rem;
-		--overviewWidth: 80%;
-	}
-
-	/* Small Devices, Tablets */
-	@media only screen and (min-width: 768px) {
-		--width: 0.25rem;
-		--2xWidth: 0.5rem;
-		--3xWidth: 1rem;
-		--4xWidth: 2rem;
-		--5xWidth: 4rem;
 		--overviewWidth: 80%;
 	}
 
 	/* Medium Devices, Desktops */
 	@media only screen and (min-width: 992px) {
-		--width: 0.125rem;
-		--2xWidth: 0.25rem;
-		--3xWidth: 0.5rem;
-		--4xWidth: 1rem;
-		--5xWidth: 2rem;
 		--overviewWidth: 100%;
-		--smallFontSize: 0.75rem;
-		--fontSize: 1rem;
-		--largeFontSize: 2rem;
 	}
 }
 
