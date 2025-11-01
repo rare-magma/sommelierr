@@ -106,10 +106,9 @@ jobs:
         env:
           CGO_ENABLED: 0
         run: |
-          mkdir dist
           for arch in amd64 arm64; do
-            GOOS=linux GOARCH=$arch go build -ldflags="-s -w" -trimpath -o dist/sommelierr-$arch ./cmd/server
-            zip dist/sommelierr-linux-$arch.zip dist/sommelierr-$arch
+            GOOS=linux GOARCH=$arch go build -ldflags="-s -w" -trimpath -o sommelierr ./cmd/server
+            zip sommelierr-linux-$arch.zip sommelierr
           done
 
       - name: Generate artifact attestation
