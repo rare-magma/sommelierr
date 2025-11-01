@@ -57,9 +57,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # ratchet:actions/checkout@v5
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # ratchet:docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # ratchet:docker/setup-buildx-action@v3
 
@@ -93,7 +90,7 @@ jobs:
           subject-digest: ${{ steps.build-push.outputs.digest }}
           push-to-registry: true
 
-  releases-matrix:
+  releases:
     needs: lint
     permissions:
       id-token: write
@@ -101,32 +98,28 @@ jobs:
       attestations: write
     name: Build and release Go binaries
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        goos: [linux]
-        goarch: [amd64, arm64]
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # ratchet:actions/checkout@v5
       - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # ratchet:actions/setup-go@v6
 
-      - name: Build
+      - name: Build binaries for all architectures
         env:
           CGO_ENABLED: 0
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
-        run: go build -ldflags="-s -w" -trimpath -o sommelierr ./cmd/server
-
-      - name: Compress
-        run: zip sommelierr-${{ matrix.goos }}-${{ matrix.goarch }}.zip sommelierr
+        run: |
+          mkdir dist
+          for arch in amd64 arm64; do
+            GOOS=linux GOARCH=$arch go build -ldflags="-s -w" -trimpath -o dist/sommelierr-$arch ./cmd/server
+            zip dist/sommelierr-linux-$arch.zip dist/sommelierr-$arch
+          done
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # ratchet:actions/attest-build-provenance@v3
         with:
-          subject-path: sommelierr-${{ matrix.goos }}-${{ matrix.goarch }}.zip
+          subject-path: dist/*.zip
 
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090 # ratchet:softprops/action-gh-release@v2
         with:
-          files: sommelierr-${{ matrix.goos }}-${{ matrix.goarch }}.zip
+          files: dist/*.zip
           tag_name: latest
