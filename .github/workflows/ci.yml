@@ -108,7 +108,7 @@ jobs:
         run: |
           for arch in amd64 arm64; do
             GOOS=linux GOARCH=$arch go build -ldflags="-s -w" -trimpath -o sommelierr ./cmd/server
-            zip sommelierr-linux-$arch.zip sommelierr
+            zip -q sommelierr-linux-$arch.zip sommelierr
           done
 
       - name: Generate artifact attestation
