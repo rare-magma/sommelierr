@@ -22,6 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # ratchet:actions/checkout@v6
       - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # ratchet:actions/setup-go@v6
+        with:
+          go-version: "stable"
 
       - name: Go Format
         run: gofmt -s -w . && git diff --exit-code
@@ -101,6 +103,8 @@ jobs:
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # ratchet:actions/checkout@v6
       - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # ratchet:actions/setup-go@v6
+        with:
+          go-version: "stable"
 
       - name: Build binaries for all architectures
         env:
