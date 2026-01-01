@@ -6,7 +6,7 @@ ENV GOARCH=$TARGETARCH
 
 COPY main.go go.mod ./
 
-RUN go build -ldflags "-s -w" -trimpath -o app main.go
+RUN go build -ldflags "-s -w" -trimpath -o app ./cmd/server
 
 FROM cgr.dev/chainguard/static:latest
 COPY --from=builder /app/app /usr/bin/app
