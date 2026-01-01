@@ -129,7 +129,7 @@ jobs:
           brew install cosign
 
           for arch in amd64 arm64; do
-            GOOS=linux GOARCH=$arch go build -trimpath -ldflags="-s -w" -o "$NAME" main.go
+            GOOS=linux GOARCH=$arch go build -trimpath -ldflags="-s -w" -o "$NAME" ./cmd/server
 
             zip -q "$NAME-linux-${arch}.zip" "$NAME" "${NAME}-${arch}.sigstore.json"
             cosign sign-blob --yes "$NAME-linux-${arch}.zip" --bundle "$NAME-linux-${arch}.zip.sigstore.json"
