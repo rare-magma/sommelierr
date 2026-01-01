@@ -73,6 +73,9 @@ jobs:
         run: |
           set -euo pipefail
 
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install cosign
+
           IMAGE="${REGISTRY}/${IMAGE_NAME}:latest"
           CREATED="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
@@ -89,6 +92,8 @@ jobs:
           buildah manifest push --all "${IMAGE}" "docker://${IMAGE}"
           DIGEST="$(skopeo inspect docker://${IMAGE} | jq -r .Digest)"
           echo "digest=${DIGEST}" >> "$GITHUB_OUTPUT"
+
+          cosign sign --yes "${IMAGE}@${DIGEST}"
 
       - name: Generate image attestation
         uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # ratchet:actions/attest-build-provenance@v3.1.0
@@ -120,10 +125,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          for arch in amd64 arm64; do
-            GOOS=linux GOARCH=$arch go build -trimpath -ldflags="-s -w" -o "$NAME" ./cmd/server
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install cosign
 
-            zip -q "$NAME-linux-$arch.zip" "$NAME"
+          for arch in amd64 arm64; do
+            GOOS=linux GOARCH=$arch go build -trimpath -ldflags="-s -w" -o "$NAME" main.go
+
+            zip -q "$NAME-linux-${arch}.zip" "$NAME" "${NAME}-${arch}.sigstore.json"
+            cosign sign-blob --yes "$NAME-linux-${arch}.zip" --bundle "$NAME-linux-${arch}.zip.sigstore.json"
             rm "$NAME"
           done
 
@@ -139,4 +148,4 @@ jobs:
           set -euo pipefail
 
           gh release delete latest --yes || true
-          gh release create latest *.zip --title "latest"
+          gh release create latest *.zip *.sigstore.json --title "latest"
