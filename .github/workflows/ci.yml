@@ -120,7 +120,7 @@ jobs:
           set -euo pipefail
 
           for arch in amd64 arm64; do
-            GOOS=linux GOARCH=$arch go build -trimpath -ldflags="-s -w" -o "$NAME" main.go
+            GOOS=linux GOARCH=$arch go build -trimpath -ldflags="-s -w" -o "$NAME" ./cmd/server
 
             zip -q "$NAME-linux-$arch.zip" "$NAME"
             rm "$NAME"
