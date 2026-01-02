@@ -93,7 +93,7 @@ jobs:
           DIGEST="$(skopeo inspect docker://${IMAGE} | jq -r .Digest)"
           echo "digest=${DIGEST}" >> "$GITHUB_OUTPUT"
 
-          cosign sign --yes "${IMAGE}@${DIGEST}"
+          cosign sign --recursively --yes "${IMAGE}@${DIGEST}"
 
       - name: Generate image attestation
         uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # ratchet:actions/attest-build-provenance@v3.1.0
