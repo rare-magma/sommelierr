@@ -19,106 +19,133 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # ratchet:actions/checkout@v5
-      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # ratchet:actions/setup-go@v6
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # ratchet:actions/checkout@v6
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # ratchet:actions/setup-go@v6
+        with:
+          go-version: "stable"
 
-      - name: Go Format
-        run: gofmt -s -w . && git diff --exit-code
+      - name: Lint
+        run: |
+          set -euo pipefail
 
-      - name: Go Vet
-        run: go vet ./...
+          gofmt -s -w .
+          git diff --exit-code
 
-      - name: Go Tidy
-        run: go mod tidy && git diff --exit-code
+          go vet ./...
 
-      - name: Go Mod
-        run: go mod download
+          go mod tidy
+          git diff --exit-code
 
-      - name: Go Mod Verify
-        run: go mod verify
+          go mod download
+          go mod verify
 
-      - name: Install govulncheck
-        run: go install golang.org/x/vuln/cmd/govulncheck@latest
-
-      - name: Run govulncheck
-        run: govulncheck
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./...
 
   build-and-push-image:
+    name: Build and push container image
     needs: lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
     permissions:
-      id-token: write
-      attestations: write
       contents: read
       packages: write
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # ratchet:actions/checkout@v5
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # ratchet:actions/checkout@v6
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # ratchet:docker/setup-buildx-action@v3
+      - name: Authenticate to GHCR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          echo "${GITHUB_TOKEN}" | buildah login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin --compat-auth-file=/home/runner/.docker/config.json
 
-      - name: Log in to the container registry
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # ratchet:docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push image
+        id: build
+        run: |
+          set -euo pipefail
 
-      - name: Extract metadata for Docker
-        id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # ratchet:docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install cosign
 
-      - name: Build and push Docker image
-        id: build-push
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # ratchet:docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          labels: ${{ steps.meta.outputs.labels }}
-          annotations: ${{ steps.meta.outputs.annotations }}
+          IMAGE="${REGISTRY}/${IMAGE_NAME}:latest"
+          CREATED="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # ratchet:actions/attest-build-provenance@v3
+          buildah build \
+            --jobs 2 \
+            --platform=linux/arm64,linux/amd64 \
+            --manifest "${IMAGE}" \
+            --label org.opencontainers.image.source="https://github.com/${GITHUB_REPOSITORY}" \
+            --label org.opencontainers.image.revision="${GITHUB_SHA}" \
+            --label org.opencontainers.image.created="${CREATED}" \
+            .
+
+          buildah push "${IMAGE}"
+          buildah manifest push --all "${IMAGE}" "docker://${IMAGE}"
+          DIGEST="$(skopeo inspect docker://${IMAGE} | jq -r .Digest)"
+          echo "digest=${DIGEST}" >> "$GITHUB_OUTPUT"
+
+          cosign sign --recursive --yes "${IMAGE}@${DIGEST}"
+
+      - name: Generate image attestation
+        uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # ratchet:actions/attest-build-provenance@v3.1.0
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.build-push.outputs.digest }}
+          subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
 
   releases:
-    needs: lint
-    permissions:
-      id-token: write
-      contents: write
-      attestations: write
     name: Build and release Go binaries
+    needs: lint
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # ratchet:actions/checkout@v5
-      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # ratchet:actions/setup-go@v6
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # ratchet:actions/checkout@v6
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # ratchet:actions/setup-go@v6
+        with:
+          go-version: "stable"
 
       - name: Build binaries for all architectures
         env:
           CGO_ENABLED: 0
+          NAME: ${{ github.event.repository.name }}
         run: |
+          set -euo pipefail
+
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install cosign
+
           for arch in amd64 arm64; do
-            GOOS=linux GOARCH=$arch go build -ldflags="-s -w" -trimpath -o sommelierr ./cmd/server
-            zip -q sommelierr-linux-$arch.zip sommelierr
+            GOOS=linux GOARCH=$arch go build -trimpath -ldflags="-s -w" -o "$NAME" ./cmd/server
+
+            zip -q "$NAME-linux-${arch}.zip" "$NAME" "${NAME}-${arch}.sigstore.json"
+            cosign sign-blob --yes "$NAME-linux-${arch}.zip" --bundle "$NAME-linux-${arch}.zip.sigstore.json"
+            rm "$NAME"
           done
 
       - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # ratchet:actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # ratchet:actions/attest-build-provenance@v3.1.0
         with:
           subject-path: "*.zip"
 
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090 # ratchet:softprops/action-gh-release@v2
-        with:
-          files: "*.zip"
-          tag_name: latest
+      - name: Create Github release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          gh release delete latest --yes || true
+          gh release create latest *.zip *.sigstore.json --title "latest"
