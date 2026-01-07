@@ -42,7 +42,7 @@
     <script>
         function load(data) {
             document.getElementById('title').textContent = data.title;
-            document.getElementById('year').textContent = '(' + data.year + ')';
+            document.getElementById('year').textContent = `(${data.year})`;
             document.getElementById('overview').textContent = data.overview || 'No description.';
             const links = document.getElementsByTagName('a');
             for (const link of links) {
@@ -63,7 +63,7 @@
         async function loadRandomMovie() {
             const resp = await fetch('/movie');
             if (!resp.ok) {
-                alert('Failed to get movie: ' + resp.statusText);
+                alert(`Failed to get movie: ${resp.statusText}`);
                 return;
             }
             const data = await resp.json();
@@ -73,7 +73,7 @@
         async function loadRandomSeries() {
             const resp = await fetch('/series');
             if (!resp.ok) {
-                alert('Failed to get series: ' + resp.statusText);
+                alert(`Failed to get series: ${resp.statusText}`);
                 return;
             }
             const data = await resp.json();
@@ -81,6 +81,7 @@
         }
 
         async function loadRandom() {
+            const randomOption = Math.floor(Math.random() * 2);;
             const selection = document.querySelector('input[name="filter"]:checked').value;
             switch (selection) {
                 case "movies":
@@ -90,7 +91,6 @@
                     await loadRandomSeries();
                     break;
                 default:
-                    const randomOption = Math.floor(Math.random() * 2);;
                     randomOption === 0 ? await loadRandomMovie() : await loadRandomSeries();
             }
         }
