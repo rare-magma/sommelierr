@@ -8,6 +8,7 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
+	"os"
 	"sommelierr/internal/domain"
 	"strings"
 )
@@ -17,6 +18,9 @@ var html string
 
 //go:embed ui/styles.css
 var css string
+
+//go:embed ui/styles-plain.css
+var cssPlain string
 
 type Model struct {
 	Style string
@@ -28,8 +32,15 @@ type APIHandler struct {
 }
 
 func processTemplate() []byte {
+	var style string
+	usePlainStyle := os.Getenv("PLAIN_STYLE")
+	if usePlainStyle == "true" {
+		style = cssPlain
+	} else {
+		style = css
+	}
 	model := Model{
-		Style: css,
+		Style: style,
 	}
 
 	funcs := template.FuncMap{

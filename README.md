@@ -5,6 +5,8 @@ A refined selection from your Radarr and Sonarr cellars.
 |                                                Horizontal layout                                                 |                                              Vertical layout                                               |
 | :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
 | <img alt="sommelierr horizontal layout screenshot" src="docs/desktop.png" title="Horizontal" width="100%"> | <img alt="sommelierr vertical layout screenshot" src="docs/phone.png" title="Vertical" width="100%"> |
+|                                                Plain style horizontal layout                                                 |                                              Plain style vertical layout                                               |
+| <img alt="sommelierr horizontal layout screenshot" src="docs/desktop-plain.png" title="Horizontal" width="100%"> | <img alt="sommelierr vertical layout screenshot" src="docs/phone-plain.png" title="Vertical" width="100%"> |
 
 ## Published On
 
@@ -78,6 +80,7 @@ RADARR_API_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 SONARR_HOST=https://sonarr.example.com
 SONARR_API_KEY=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 PORT=8080
+PLAIN_STYLE=false
 ```
 
 - `EXCLUDE_LABEL` should be the label of the tag used to exclude already watched movies/series. This is optional.
@@ -86,6 +89,13 @@ PORT=8080
 - `SONARR_HOST` should be the FQDN of the Sonarr service.
 - `SONARR_API_KEY` should be the Sonarr api key. This is configured in Settings - General - API Key
 - `PORT` should be the port available for Sommelierr to attach to. Defaults to 8080
+- `PLAIN_STYLE` use a plain black and white style sheet. Defaults to false
+
+## Usage
+
+Open sommelierr in the browser. By default sommelierr displays a random movie or series from the configured Radarr and Sonarr instances. You can choose to get only movies or series by selecting the corresponding option and clicking the "another one" button.
+If the `EXCLUDE_LABEL` option is set up then sommelierr will query Radarr and Sonnar for all the movies/series that don't include that label. This way only movies/series that have been watched show up in the recommendations.
+Clicking on the poster image opens the movie/series page in Radarr/Sonarr.
 
 ## Troubleshooting
 
