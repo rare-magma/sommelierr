@@ -95,7 +95,7 @@ PLAIN_STYLE=false
 
 Open sommelierr in the browser. By default sommelierr displays a random movie or series from the configured Radarr and Sonarr instances. You can choose to get only movies or series by selecting the corresponding option and clicking the "another one" button.
 
-If the `EXCLUDE_LABEL` option is set up then sommelierr will query Radarr and Sonnar for all the movies/series that don't include that label. This way only movies/series that have been watched show up in the recommendations.
+If the `EXCLUDE_LABEL` option is set up then sommelierr will query Radarr and Sonarr for all the movies/series that don't include that label. This way only movies/series that have been watched show up in the recommendations.
 
 Clicking on the poster image opens the movie/series page in Radarr/Sonarr.
 
