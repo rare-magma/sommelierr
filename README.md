@@ -2,10 +2,10 @@
 
 A refined selection from your Radarr and Sonarr cellars.
 
-|                                                Horizontal layout                                                 |                                              Vertical layout                                               |
-| :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
 |                                                Plain style horizontal layout                                                 |                                              Plain style vertical layout                                               |
+| :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
 | <img alt="sommelierr horizontal layout screenshot" src="docs/desktop-plain.png" title="Horizontal" width="100%"> | <img alt="sommelierr vertical layout screenshot" src="docs/phone-plain.png" title="Vertical" width="100%"> |
+|                                                Horizontal layout                                                 |                                              Vertical layout                                               |
 | <img alt="sommelierr horizontal layout screenshot" src="docs/desktop.png" title="Horizontal" width="100%"> | <img alt="sommelierr vertical layout screenshot" src="docs/phone.png" title="Vertical" width="100%"> |
 
 ## Published On
