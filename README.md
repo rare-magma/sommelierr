@@ -4,9 +4,9 @@ A refined selection from your Radarr and Sonarr cellars.
 
 |                                                Horizontal layout                                                 |                                              Vertical layout                                               |
 | :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
-| <img alt="sommelierr horizontal layout screenshot" src="docs/desktop.png" title="Horizontal" width="100%"> | <img alt="sommelierr vertical layout screenshot" src="docs/phone.png" title="Vertical" width="100%"> |
 |                                                Plain style horizontal layout                                                 |                                              Plain style vertical layout                                               |
 | <img alt="sommelierr horizontal layout screenshot" src="docs/desktop-plain.png" title="Horizontal" width="100%"> | <img alt="sommelierr vertical layout screenshot" src="docs/phone-plain.png" title="Vertical" width="100%"> |
+| <img alt="sommelierr horizontal layout screenshot" src="docs/desktop.png" title="Horizontal" width="100%"> | <img alt="sommelierr vertical layout screenshot" src="docs/phone.png" title="Vertical" width="100%"> |
 
 ## Published On
 
@@ -80,7 +80,7 @@ RADARR_API_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 SONARR_HOST=https://sonarr.example.com
 SONARR_API_KEY=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 PORT=8080
-PLAIN_STYLE=false
+PLAIN_STYLE=true
 ```
 
 - `EXCLUDE_LABEL` should be the label of the tag used to exclude already watched movies/series. This is optional.
